@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">FreelanceReceipt</string>
+
+    <!-- Dashboard Screen -->
+    <string name="fab_scan_content_desc">Neuen Beleg scannen</string>
+    <string name="dashboard_empty_title">Keine Belege vorhanden</string>
+    <string name="dashboard_empty_subtitle">Tippe auf das +, um deinen ersten Beleg zu scannen.</string>
+</resources>

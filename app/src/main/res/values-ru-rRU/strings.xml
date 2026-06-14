@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">FreelanceReceipt</string>
+
+    <!-- Dashboard Screen -->
+    <string name="fab_scan_content_desc">Сканировать новый чек</string>
+    <string name="dashboard_empty_title">Чеки не найдены</string>
+    <string name="dashboard_empty_subtitle">Нажмите +, чтобы отсканировать свой первый чек.</string>
+</resources>

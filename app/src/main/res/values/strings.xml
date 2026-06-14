@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">FreelanceReceipt</string>
+
+    <!-- Dashboard Screen -->
+    <string name="fab_scan_content_desc">Scan new receipt</string>
+    <string name="dashboard_empty_title">No receipts found</string>
+    <string name="dashboard_empty_subtitle">Tap the + to scan your first receipt.</string>
+</resources>

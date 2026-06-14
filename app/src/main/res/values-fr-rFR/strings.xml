@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">FreelanceReceipt</string>
+
+    <!-- Dashboard Screen -->
+    <string name="fab_scan_content_desc">Scanner un nouveau reçu</string>
+    <string name="dashboard_empty_title">Aucun reçu trouvé</string>
+    <string name="dashboard_empty_subtitle">Appuyez sur le + pour scanner votre premier reçu.</string>
+</resources>

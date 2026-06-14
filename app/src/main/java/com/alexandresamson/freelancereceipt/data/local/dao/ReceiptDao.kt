@@ -1,0 +1,24 @@
+package com.alexandresamson.freelancereceipt.data.local.dao
+
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import com.alexandresamson.freelancereceipt.data.local.entity.ReceiptEntity
+import kotlinx.coroutines.flow.Flow
+
+@Dao
+interface ReceiptDao {
+    // Speichert einen neuen Beleg. Bei gleicher ID wird überschrieben.
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertReceipt(receipt: ReceiptEntity)
+
+    // Holt alle Belege sortiert nach dem neuesten Datum.
+    // Flow aktualisiert die UI automatisch, wenn sich die Datenbank ändert!
+    @Query("SELECT * FROM receipts ORDER BY timestamp DESC")
+    fun getAllReceipts(): Flow<List<ReceiptEntity>>
+
+    // Löscht einen Beleg anhand seiner ID
+    @Query("DELETE FROM receipts WHERE id = :receiptId")
+    suspend fun deleteReceiptById(receiptId: Long)
+}
