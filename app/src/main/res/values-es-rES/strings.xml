@@ -29,4 +29,18 @@
     <string name="biometric_prompt_title">Desbloquear FreelanceReceipt</string>
     <string name="biometric_prompt_subtitle">Confirma tu identidad</string>
     <string name="biometric_retry">Reintentar</string>
+
+    <string name="camera_hint">Mantén el recibo en el marco y toma la foto</string>
+    <string name="camera_capture_desc">Tomar foto</string>
+    <string name="camera_permission_rationale">Se necesita la cámara para escanear recibos.</string>
+    <string name="camera_permission_denied">Acceso a la cámara denegado. Por favor, actívalo en los ajustes.</string>
+    <string name="action_grant_permission">Conceder permiso</string>
+    <string name="action_back">Atrás</string>
+
+    <string name="add_receipt_title">Comprobar recibo</string>
+    <string name="label_merchant">Comerciante</string>
+    <string name="label_amount">Importe</string>
+    <string name="label_tax_rate">Tipo de IVA</string>
+    <string name="label_category">Categoría</string>
+    <string name="action_save_receipt">Guardar recibo</string>
 </resources>

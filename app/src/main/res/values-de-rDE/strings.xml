@@ -29,4 +29,18 @@
     <string name="biometric_prompt_title">FreelanceReceipt entsperren</string>
     <string name="biometric_prompt_subtitle">Bestätige deine Identität</string>
     <string name="biometric_retry">Erneut versuchen</string>
+
+    <string name="camera_hint">Beleg in den Rahmen halten und fotografieren</string>
+    <string name="camera_capture_desc">Foto aufnehmen</string>
+    <string name="camera_permission_rationale">Die Kamera wird benötigt, um Belege zu scannen.</string>
+    <string name="camera_permission_denied">Kamerazugriff wurde verweigert. Bitte in den Einstellungen aktivieren.</string>
+    <string name="action_grant_permission">Berechtigung erteilen</string>
+    <string name="action_back">Zurück</string>
+
+    <string name="add_receipt_title">Beleg prüfen</string>
+    <string name="label_merchant">Händler</string>
+    <string name="label_amount">Betrag</string>
+    <string name="label_tax_rate">MwSt.-Satz</string>
+    <string name="label_category">Kategorie</string>
+    <string name="action_save_receipt">Beleg speichern</string>
 </resources>

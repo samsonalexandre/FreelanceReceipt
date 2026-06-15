@@ -30,4 +30,18 @@
     <string name="biometric_prompt_title">Unlock FreelanceReceipt</string>
     <string name="biometric_prompt_subtitle">Confirm your identity</string>
     <string name="biometric_retry">Try again</string>
+
+    <string name="camera_hint">Hold receipt in frame and take picture</string>
+    <string name="camera_capture_desc">Take photo</string>
+    <string name="camera_permission_rationale">Camera is needed to scan receipts.</string>
+    <string name="camera_permission_denied">Camera access denied. Please enable in settings.</string>
+    <string name="action_grant_permission">Grant permission</string>
+    <string name="action_back">Back</string>
+
+    <string name="add_receipt_title">Check receipt</string>
+    <string name="label_merchant">Merchant</string>
+    <string name="label_amount">Amount</string>
+    <string name="label_tax_rate">Tax rate</string>
+    <string name="label_category">Category</string>
+    <string name="action_save_receipt">Save receipt</string>
 </resources>

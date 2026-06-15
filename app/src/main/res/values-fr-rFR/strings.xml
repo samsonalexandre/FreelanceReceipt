@@ -29,4 +29,18 @@
     <string name="biometric_prompt_title">Déverrouiller FreelanceReceipt</string>
     <string name="biometric_prompt_subtitle">Confirmez votre identité</string>
     <string name="biometric_retry">Réessayer</string>
+
+    <string name="camera_hint">Maintenez le reçu dans le cadre et prenez la photo</string>
+    <string name="camera_capture_desc">Prendre une photo</string>
+    <string name="camera_permission_rationale">L\'appareil photo est nécessaire pour scanner les reçus.</string>
+    <string name="camera_permission_denied">Accès à l\'appareil photo refusé. Veuillez l\'activer dans les paramètres.</string>
+    <string name="action_grant_permission">Accorder l\'autorisation</string>
+    <string name="action_back">Retour</string>
+
+    <string name="add_receipt_title">Vérifier le reçu</string>
+    <string name="label_merchant">Commerçant</string>
+    <string name="label_amount">Montant</string>
+    <string name="label_tax_rate">Taux de TVA</string>
+    <string name="label_category">Catégorie</string>
+    <string name="action_save_receipt">Enregistrer le reçu</string>
 </resources>

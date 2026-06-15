@@ -29,4 +29,18 @@
     <string name="biometric_prompt_title">Sblocca FreelanceReceipt</string>
     <string name="biometric_prompt_subtitle">Conferma la tua identità</string>
     <string name="biometric_retry">Riprova</string>
+
+    <string name="camera_hint">Tieni lo scontrino nell\'inquadratura e scatta la foto</string>
+    <string name="camera_capture_desc">Scatta foto</string>
+    <string name="camera_permission_rationale">La fotocamera è necessaria per scansionare gli scontrini.</string>
+    <string name="camera_permission_denied">Accesso alla fotocamera negato. Per favore, abilitalo nelle impostazioni.</string>
+    <string name="action_grant_permission">Concedi permesso</string>
+    <string name="action_back">Indietro</string>
+
+    <string name="add_receipt_title">Controlla scontrino</string>
+    <string name="label_merchant">Commerciante</string>
+    <string name="label_amount">Importo</string>
+    <string name="label_tax_rate">Aliquota IVA</string>
+    <string name="label_category">Categoria</string>
+    <string name="action_save_receipt">Salva scontrino</string>
 </resources>

@@ -9,6 +9,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import com.google.firebase.auth.FirebaseAuth
 import com.alexandresamson.freelancereceipt.ui.auth.AuthViewModel
+import com.alexandresamson.freelancereceipt.ui.addreceipt.AddReceiptViewModel
 
 val appModule = module {
 
@@ -35,4 +36,6 @@ val appModule = module {
 
     // AuthViewModel
     viewModel { AuthViewModel(get()) }
+
+    viewModel { AddReceiptViewModel(get(), get()) }
 }
