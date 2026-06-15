@@ -5,4 +5,28 @@
     <string name="fab_scan_content_desc">Scanner un nouveau reçu</string>
     <string name="dashboard_empty_title">Aucun reçu trouvé</string>
     <string name="dashboard_empty_subtitle">Appuyez sur le + pour scanner votre premier reçu.</string>
+    <string name="receipt_tax_rate">TVA %.1f%%</string>
+    <string name="receipt_delete_content_desc">Supprimer le reçu</string>
+
+    <!-- Auth -->
+    <string name="login_title">Se connecter</string>
+    <string name="register_title">Créer un compte</string>
+    <string name="label_email">E-mail</string>
+    <string name="label_password">Mot de passe</string>
+    <string name="label_password_confirm">Confirmer le mot de passe</string>
+    <string name="action_login">Se connecter</string>
+    <string name="action_register">S\'inscrire</string>
+    <string name="action_google_signin">Se connecter avec Google</string>
+    <string name="action_go_to_register">Pas encore de compte ? S\'inscrire</string>
+    <string name="action_go_to_login">Déjà inscrit ? Se connecter</string>
+    <string name="action_show">Afficher</string>
+    <string name="action_hide">Masquer</string>
+    <string name="error_passwords_no_match">Les mots de passe ne correspondent pas</string>
+
+    <!-- Biometrie -->
+    <string name="biometric_title">Application verrouillée</string>
+    <string name="biometric_subtitle">Veuillez déverrouiller avec l\'empreinte digitale ou le visage</string>
+    <string name="biometric_prompt_title">Déverrouiller FreelanceReceipt</string>
+    <string name="biometric_prompt_subtitle">Confirmez votre identité</string>
+    <string name="biometric_retry">Réessayer</string>
 </resources>

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "151418027308",
+    "project_id": "freelancereceipt",
+    "storage_bucket": "freelancereceipt.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:151418027308:android:0c94eaadf52a80f5bc0089",
+        "android_client_info": {
+          "package_name": "com.alexandresamson.freelancereceipt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "151418027308-6btke10ca6r3cv4jk9cmfgt6dcptatha.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alexandresamson.freelancereceipt",
+            "certificate_hash": "b316ed7fc7c5ed8f4334f816b73d673032538019"
+          }
+        },
+        {
+          "client_id": "151418027308-9jlc90dp3jd6c5habsn5jsjjqrkb02ll.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjAKzYwxeVAKZmfgY6QgJPpHckDT_2tBo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "151418027308-9jlc90dp3jd6c5habsn5jsjjqrkb02ll.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,82 +1,227 @@
 package com.alexandresamson.freelancereceipt.ui.dashboard
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-// WICHTIG: Ersetze das durch deinen echten Paketnamen, falls er abweicht, damit das "R" gefunden wird!
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexandresamson.freelancereceipt.R
+import com.alexandresamson.freelancereceipt.data.local.entity.ReceiptEntity
+import org.koin.androidx.compose.koinViewModel
+import java.text.NumberFormat
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Composable
-fun DashboardScreen() {
+fun DashboardScreen(
+    viewModel: ReceiptViewModel = koinViewModel(),
+    onAddClick: () -> Unit = {},
+    onLogout: () -> Unit = {}
+) {
+    // collectAsStateWithLifecycle beachtet automatisch den Lifecycle der App (schont Akku)
+    val receipts by viewModel.receipts.collectAsStateWithLifecycle()
+
+    DashboardContent(
+        receipts = receipts,
+        onAddClick = onAddClick,
+        onDeleteClick = { viewModel.deleteReceipt(it) }
+    )
+}
+
+// Reines Compose ohne ViewModel – Perfekt für saubere Previews und Tests
+@Composable
+private fun DashboardContent(
+    receipts: List<ReceiptEntity>,
+    onAddClick: () -> Unit,
+    onDeleteClick: (Long) -> Unit
+) {
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { /* Hier kommt später die Scanner-Logik rein */ },
+                onClick = onAddClick,
                 containerColor = MaterialTheme.colorScheme.primary
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    // Hier greifen wir auf die XML zu:
-                    contentDescription = stringResource(id = R.string.fab_scan_content_desc)
+                    contentDescription = stringResource(R.string.fab_scan_content_desc)
                 )
             }
         }
     ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                // Hier greifen wir auf die XML zu:
-                text = stringResource(id = R.string.dashboard_empty_title),
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                // Hier greifen wir auf die XML zu:
-                text = stringResource(id = R.string.dashboard_empty_subtitle),
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+        if (receipts.isEmpty()) {
+            EmptyState(modifier = Modifier.padding(paddingValues))
+        } else {
+            ReceiptList(
+                receipts = receipts,
+                onDeleteClick = onDeleteClick,
+                modifier = Modifier.padding(paddingValues)
             )
         }
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true, locale = "de") // Preview auf Deutsch zwingen
 @Composable
-fun DashboardScreenPreviewDe() {
-    MaterialTheme {
-        DashboardScreen()
+private fun EmptyState(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = stringResource(R.string.dashboard_empty_title),
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = stringResource(R.string.dashboard_empty_subtitle),
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true, locale = "en") // Preview auf Englisch zwingen
 @Composable
-fun DashboardScreenPreviewEn() {
+private fun ReceiptList(
+    receipts: List<ReceiptEntity>,
+    onDeleteClick: (Long) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    LazyColumn(
+        modifier = modifier.fillMaxSize(),
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(
+            items = receipts,
+            key = { it.id } // Stabile Keys -> effiziente Recomposition bei Listen-Änderungen
+        ) { receipt ->
+            ReceiptItem(
+                receipt = receipt,
+                onDeleteClick = { onDeleteClick(receipt.id) }
+            )
+        }
+    }
+}
+
+@Composable
+private fun ReceiptItem(
+    receipt: ReceiptEntity,
+    onDeleteClick: () -> Unit
+) {
+    val currencyFormat = NumberFormat.getCurrencyInstance(Locale.getDefault())
+    val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = receipt.merchant,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(
+                    text = dateFormat.format(Date(receipt.timestamp)),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    text = receipt.category,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            Column(horizontalAlignment = Alignment.End) {
+                Text(
+                    // Cent -> Euro/Währung für die Anzeige
+                    text = currencyFormat.format(receipt.amountInCents / 100.0),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Text(
+                    // Hier greifen wir auf den %.1f Platzhalter in der XML zu (ohne .toInt())
+                    text = stringResource(R.string.receipt_tax_rate, receipt.taxRate),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            IconButton(onClick = onDeleteClick) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = stringResource(R.string.receipt_delete_content_desc),
+                    tint = MaterialTheme.colorScheme.error
+                )
+            }
+        }
+    }
+}
+
+// --- Previews (kein ViewModel nötig, sofort sichtbar im Studio) ---
+
+@Preview(showBackground = true, showSystemUi = true, locale = "de")
+@Composable
+private fun DashboardEmptyPreviewDe() {
     MaterialTheme {
-        DashboardScreen()
+        DashboardContent(
+            receipts = emptyList(),
+            onAddClick = {},
+            onDeleteClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, showSystemUi = true, locale = "de")
+@Composable
+private fun DashboardWithDataPreviewDe() {
+    MaterialTheme {
+        DashboardContent(
+            receipts = listOf(
+                ReceiptEntity(
+                    id = 1,
+                    timestamp = System.currentTimeMillis(),
+                    merchant = "REWE City",
+                    amountInCents = 4799,
+                    taxRate = 19.0,
+                    category = "Lebensmittel"
+                ),
+                ReceiptEntity(
+                    id = 2,
+                    timestamp = System.currentTimeMillis() - 86_400_000, // minus 1 Tag
+                    merchant = "Tankstelle Shell",
+                    amountInCents = 8950,
+                    taxRate = 19.0,
+                    category = "Fahrtkosten"
+                )
+            ),
+            onAddClick = {},
+            onDeleteClick = {}
+        )
     }
 }

@@ -5,4 +5,28 @@
     <string name="fab_scan_content_desc">Сканировать новый чек</string>
     <string name="dashboard_empty_title">Чеки не найдены</string>
     <string name="dashboard_empty_subtitle">Нажмите +, чтобы отсканировать свой первый чек.</string>
+    <string name="receipt_tax_rate">НДС %.1f%%</string>
+    <string name="receipt_delete_content_desc">Удалить чек</string>
+
+    <!-- Auth -->
+    <string name="login_title">Войти</string>
+    <string name="register_title">Создать аккаунт</string>
+    <string name="label_email">Эл. почта</string>
+    <string name="label_password">Пароль</string>
+    <string name="label_password_confirm">Подтвердить пароль</string>
+    <string name="action_login">Войти</string>
+    <string name="action_register">Зарегистрироваться</string>
+    <string name="action_google_signin">Войти через Google</string>
+    <string name="action_go_to_register">Нет аккаунта? Зарегистрироваться</string>
+    <string name="action_go_to_login">Уже зарегистрированы? Войти</string>
+    <string name="action_show">Показать</string>
+    <string name="action_hide">Скрыть</string>
+    <string name="error_passwords_no_match">Пароли не совпадают</string>
+
+    <!-- Biometrie -->
+    <string name="biometric_title">Приложение заблокировано</string>
+    <string name="biometric_subtitle">Разблокируйте по отпечатку пальца или лицу</string>
+    <string name="biometric_prompt_title">Разблокировать FreelanceReceipt</string>
+    <string name="biometric_prompt_subtitle">Подтвердите свою личность</string>
+    <string name="biometric_retry">Повторить попытку</string>
 </resources>

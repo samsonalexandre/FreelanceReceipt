@@ -5,4 +5,29 @@
     <string name="fab_scan_content_desc">Scan new receipt</string>
     <string name="dashboard_empty_title">No receipts found</string>
     <string name="dashboard_empty_subtitle">Tap the + to scan your first receipt.</string>
+    <string name="receipt_tax_rate">VAT %.1f%%</string>
+    <string name="receipt_delete_content_desc">Delete receipt</string>
+
+    <!-- Auth -->
+    <string name="login_title">Log in</string>
+    <string name="register_title">Create account</string>
+    <string name="label_email">Email</string>
+    <string name="label_password">Password</string>
+    <string name="label_password_confirm">Confirm password</string>
+    <string name="action_login">Log in</string>
+    <string name="action_register">Register</string>
+    <string name="action_google_signin">Sign in with Google</string>
+    <string name="action_go_to_register">Don\'t have an account? Register</string>
+    <string name="action_go_to_login">Already registered? Log in</string>
+    <string name="action_show">Show</string>
+    <string name="action_hide">Hide</string>
+    <string name="error_passwords_no_match">Passwords do not match</string>
+    <string name="default_web_client_id" translatable="false">151418027308-9jlc90dp3jd6c5habsn5jsjjqrkb02ll.apps.googleusercontent.com</string>
+
+    <!-- Biometrie -->
+    <string name="biometric_title">App locked</string>
+    <string name="biometric_subtitle">Please unlock with fingerprint or face</string>
+    <string name="biometric_prompt_title">Unlock FreelanceReceipt</string>
+    <string name="biometric_prompt_subtitle">Confirm your identity</string>
+    <string name="biometric_retry">Try again</string>
 </resources>

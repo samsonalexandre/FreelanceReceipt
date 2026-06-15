@@ -5,4 +5,28 @@
     <string name="fab_scan_content_desc">Scansiona nuova ricevuta</string>
     <string name="dashboard_empty_title">Nessuna ricevuta trovata</string>
     <string name="dashboard_empty_subtitle">Tocca il + per scansionare la tua prima ricevuta.</string>
+    <string name="receipt_tax_rate">IVA %.1f%%</string>
+    <string name="receipt_delete_content_desc">Elimina ricevuta</string>
+
+    <!-- Auth -->
+    <string name="login_title">Accedi</string>
+    <string name="register_title">Crea account</string>
+    <string name="label_email">Email</string>
+    <string name="label_password">Password</string>
+    <string name="label_password_confirm">Conferma password</string>
+    <string name="action_login">Accedi</string>
+    <string name="action_register">Registrati</string>
+    <string name="action_google_signin">Accedi con Google</string>
+    <string name="action_go_to_register">Non hai un account? Registrati</string>
+    <string name="action_go_to_login">Già registrato? Accedi</string>
+    <string name="action_show">Mostra</string>
+    <string name="action_hide">Nascondi</string>
+    <string name="error_passwords_no_match">Le password non corrispondono</string>
+
+    <!-- Biometrie -->
+    <string name="biometric_title">App bloccata</string>
+    <string name="biometric_subtitle">Sblocca con impronta digitale o viso</string>
+    <string name="biometric_prompt_title">Sblocca FreelanceReceipt</string>
+    <string name="biometric_prompt_subtitle">Conferma la tua identità</string>
+    <string name="biometric_retry">Riprova</string>
 </resources>

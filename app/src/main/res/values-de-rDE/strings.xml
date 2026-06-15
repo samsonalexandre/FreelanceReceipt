@@ -5,4 +5,28 @@
     <string name="fab_scan_content_desc">Neuen Beleg scannen</string>
     <string name="dashboard_empty_title">Keine Belege vorhanden</string>
     <string name="dashboard_empty_subtitle">Tippe auf das +, um deinen ersten Beleg zu scannen.</string>
+    <string name="receipt_tax_rate">MwSt. %.1f%%</string>
+    <string name="receipt_delete_content_desc">Beleg löschen</string>
+
+    <!-- Auth -->
+    <string name="login_title">Anmelden</string>
+    <string name="register_title">Konto erstellen</string>
+    <string name="label_email">E-Mail</string>
+    <string name="label_password">Passwort</string>
+    <string name="label_password_confirm">Passwort bestätigen</string>
+    <string name="action_login">Anmelden</string>
+    <string name="action_register">Registrieren</string>
+    <string name="action_google_signin">Mit Google anmelden</string>
+    <string name="action_go_to_register">Noch kein Konto? Registrieren</string>
+    <string name="action_go_to_login">Bereits registriert? Anmelden</string>
+    <string name="action_show">Zeigen</string>
+    <string name="action_hide">Verbergen</string>
+    <string name="error_passwords_no_match">Passwörter stimmen nicht überein</string>
+
+    <!-- Biometrie -->
+    <string name="biometric_title">App gesperrt</string>
+    <string name="biometric_subtitle">Bitte per Fingerabdruck oder Gesicht entsperren</string>
+    <string name="biometric_prompt_title">FreelanceReceipt entsperren</string>
+    <string name="biometric_prompt_subtitle">Bestätige deine Identität</string>
+    <string name="biometric_retry">Erneut versuchen</string>
 </resources>
