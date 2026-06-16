@@ -1,7 +1,12 @@
 package com.alexandresamson.freelancereceipt.ui.camera
 
+import android.content.Context
 import android.util.Log
-import androidx.camera.core.*
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
+import androidx.camera.core.ImageProxy
+import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.border
@@ -59,27 +64,37 @@ fun CameraScreen(
 private fun CameraPreview(onTextRecognized: (String) -> Unit) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
+
+    // Executor als remember — wird NICHT bei Recomposition neu erstellt
     val cameraExecutor = remember { Executors.newSingleThreadExecutor() }
+
+    // ImageCapture ebenfalls stabil halten
+    val imageCapture = remember {
+        ImageCapture.Builder()
+            .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
+            .build()
+    }
+
     var isScanning by remember { mutableStateOf(false) }
 
-    val imageCapture = remember { ImageCapture.Builder().build() }
-
+    // Executor erst beim endgültigen Verlassen des Composables schließen
     DisposableEffect(Unit) {
-        onDispose { cameraExecutor.shutdown() }
+        onDispose {
+            cameraExecutor.shutdown()
+        }
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
-        // Kamera-Vorschau
         AndroidView(
             factory = { ctx ->
                 PreviewView(ctx).also { previewView ->
                     val cameraProviderFuture = ProcessCameraProvider.getInstance(ctx)
                     cameraProviderFuture.addListener({
-                        val cameraProvider = cameraProviderFuture.get()
-                        val preview = Preview.Builder().build()
-                            .also { it.setSurfaceProvider(previewView.surfaceProvider) }
-
                         try {
+                            val cameraProvider = cameraProviderFuture.get()
+                            val preview = Preview.Builder().build()
+                                .also { it.setSurfaceProvider(previewView.surfaceProvider) }
+
                             cameraProvider.unbindAll()
                             cameraProvider.bindToLifecycle(
                                 lifecycleOwner,
@@ -88,7 +103,7 @@ private fun CameraPreview(onTextRecognized: (String) -> Unit) {
                                 imageCapture
                             )
                         } catch (e: Exception) {
-                            Log.e("CameraScreen", "Kamera konnte nicht gestartet werden", e)
+                            Log.e("CameraScreen", "Kamera-Start fehlgeschlagen", e)
                         }
                     }, ContextCompat.getMainExecutor(ctx))
                 }
@@ -96,7 +111,7 @@ private fun CameraPreview(onTextRecognized: (String) -> Unit) {
             modifier = Modifier.fillMaxSize()
         )
 
-        // Scan-Rahmen als visueller Hinweis
+        // Scan-Rahmen
         Box(
             modifier = Modifier
                 .align(Alignment.Center)
@@ -127,7 +142,10 @@ private fun CameraPreview(onTextRecognized: (String) -> Unit) {
                             isScanning = false
                             onTextRecognized(text)
                         },
-                        onError = { isScanning = false }
+                        onError = {
+                            isScanning = false
+                            Log.e("CameraScreen", "Scan fehlgeschlagen")
+                        }
                     )
                 }
             },
@@ -143,8 +161,10 @@ private fun CameraPreview(onTextRecognized: (String) -> Unit) {
                     strokeWidth = 2.dp
                 )
             } else {
-                Icon(Icons.Default.Camera,
-                    contentDescription = stringResource(R.string.camera_capture_desc))
+                Icon(
+                    Icons.Default.Camera,
+                    contentDescription = stringResource(R.string.camera_capture_desc)
+                )
             }
         }
     }
@@ -152,62 +172,96 @@ private fun CameraPreview(onTextRecognized: (String) -> Unit) {
 
 private fun captureAndRecognize(
     imageCapture: ImageCapture,
-    context: android.content.Context,
+    context: Context,
     executor: java.util.concurrent.Executor,
     onResult: (String) -> Unit,
     onError: () -> Unit
 ) {
     val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
 
-    imageCapture.takePicture(executor, object : ImageCapture.OnImageCapturedCallback() {
-        @androidx.camera.core.ExperimentalGetImage
-        override fun onCaptureSuccess(imageProxy: ImageProxy) {
-            val mediaImage = imageProxy.image ?: run { imageProxy.close(); onError(); return }
-            val inputImage = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
-
-            recognizer.process(inputImage)
-                .addOnSuccessListener { visionText ->
-                    imageProxy.close()
-                    onResult(visionText.text)
-                }
-                .addOnFailureListener {
+    imageCapture.takePicture(
+        executor,
+        object : ImageCapture.OnImageCapturedCallback() {
+            @androidx.camera.core.ExperimentalGetImage
+            override fun onCaptureSuccess(imageProxy: ImageProxy) {
+                val mediaImage = imageProxy.image
+                if (mediaImage == null) {
                     imageProxy.close()
                     onError()
+                    return
                 }
-        }
 
-        override fun onError(exception: ImageCaptureException) {
-            Log.e("CameraScreen", "Foto konnte nicht aufgenommen werden", exception)
-            onError()
+                val inputImage = InputImage.fromMediaImage(
+                    mediaImage,
+                    imageProxy.imageInfo.rotationDegrees
+                )
+
+                recognizer.process(inputImage)
+                    .addOnSuccessListener { visionText ->
+                        imageProxy.close()
+                        val text = visionText.text
+                        if (text.isBlank()) {
+                            // Kein Text erkannt — trotzdem weiter,
+                            // AddReceiptScreen zeigt leere Felder zum manuellen Ausfüllen
+                            onResult("")
+                        } else {
+                            onResult(text)
+                        }
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e("CameraScreen", "ML Kit Fehler", e)
+                        imageProxy.close()
+                        onError()
+                    }
+            }
+
+            override fun onError(exception: ImageCaptureException) {
+                Log.e("CameraScreen", "Foto fehlgeschlagen: ${exception.message}")
+                onError()
+            }
         }
-    })
+    )
 }
 
 @Composable
 private fun PermissionRationale(onRequest: () -> Unit, onBack: () -> Unit) {
     Column(
-        Modifier.fillMaxSize().padding(24.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(stringResource(R.string.camera_permission_rationale),
-            style = MaterialTheme.typography.bodyLarge)
+        Text(
+            stringResource(R.string.camera_permission_rationale),
+            style = MaterialTheme.typography.bodyLarge
+        )
         Spacer(Modifier.height(16.dp))
-        Button(onClick = onRequest) { Text(stringResource(R.string.action_grant_permission)) }
-        TextButton(onClick = onBack) { Text(stringResource(R.string.action_back)) }
+        Button(onClick = onRequest) {
+            Text(stringResource(R.string.action_grant_permission))
+        }
+        TextButton(onClick = onBack) {
+            Text(stringResource(R.string.action_back))
+        }
     }
 }
 
 @Composable
 private fun PermissionDenied(onBack: () -> Unit) {
     Column(
-        Modifier.fillMaxSize().padding(24.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(stringResource(R.string.camera_permission_denied),
-            style = MaterialTheme.typography.bodyLarge)
+        Text(
+            stringResource(R.string.camera_permission_denied),
+            style = MaterialTheme.typography.bodyLarge
+        )
         Spacer(Modifier.height(16.dp))
-        TextButton(onClick = onBack) { Text(stringResource(R.string.action_back)) }
+        TextButton(onClick = onBack) {
+            Text(stringResource(R.string.action_back))
+        }
     }
 }

@@ -10,8 +10,7 @@ import androidx.fragment.app.FragmentActivity
 import com.alexandresamson.freelancereceipt.navigation.AppNavigation
 import com.alexandresamson.freelancereceipt.ui.theme.FreelanceReceiptTheme
 
-// WICHTIG: Erbt von FragmentActivity (für die Biometrie!)
-class MainActivity : FragmentActivity() {
+class MainActivity : FragmentActivity() {  // ← FragmentActivity, nicht ComponentActivity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -20,7 +19,6 @@ class MainActivity : FragmentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    // HIER ist die Magie: Wir rufen unsere Navigation auf!
                     AppNavigation()
                 }
             }

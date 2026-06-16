@@ -2,21 +2,21 @@ package com.alexandresamson.freelancereceipt.di
 
 import androidx.room.Room
 import com.alexandresamson.freelancereceipt.data.local.AppDatabase
+import com.alexandresamson.freelancereceipt.data.repository.ExportRepository
 import com.alexandresamson.freelancereceipt.data.repository.ReceiptRepository
+import com.alexandresamson.freelancereceipt.ui.addreceipt.AddReceiptViewModel
+import com.alexandresamson.freelancereceipt.ui.auth.AuthViewModel
 import com.alexandresamson.freelancereceipt.ui.dashboard.ReceiptViewModel
+import com.alexandresamson.freelancereceipt.ui.export.ExportViewModel
+import com.google.firebase.auth.FirebaseAuth
+import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-import com.google.firebase.auth.FirebaseAuth
-import com.alexandresamson.freelancereceipt.ui.auth.AuthViewModel
-import com.alexandresamson.freelancereceipt.ui.addreceipt.AddReceiptViewModel
-import com.alexandresamson.freelancereceipt.data.repository.ExportRepository
-import com.alexandresamson.freelancereceipt.ui.export.ExportViewModel
-import org.koin.android.ext.koin.androidContext
 
 val appModule = module {
 
-    // Room-Datenbank als Singleton
+    // Room-Datenbank
     single {
         Room.databaseBuilder(
             androidContext(),
@@ -25,23 +25,19 @@ val appModule = module {
         ).build()
     }
 
-    // DAO aus der DB holen
+    // DAO
     single { get<AppDatabase>().receiptDao() }
 
-    // Repository mit DAO erstellen
+    // Repositories
     single { ReceiptRepository(get()) }
+    single { ExportRepository(androidApplication()) } // androidApplication() statt androidContext()
 
-    // ViewModel mit Repository
-    viewModel { ReceiptViewModel(get()) }
-
-    // Firebase Auth als Singleton
+    // Firebase
     single { FirebaseAuth.getInstance() }
 
-    // AuthViewModel
+    // ViewModels
+    viewModel { ReceiptViewModel(get()) }
     viewModel { AuthViewModel(get()) }
-
     viewModel { AddReceiptViewModel(get(), get()) }
-
-    single { ExportRepository(androidContext()) }
     viewModel { ExportViewModel(get(), get()) }
 }

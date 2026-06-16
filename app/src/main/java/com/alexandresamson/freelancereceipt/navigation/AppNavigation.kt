@@ -1,25 +1,20 @@
 package com.alexandresamson.freelancereceipt.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.alexandresamson.freelancereceipt.ui.auth.AuthViewModel
 import com.alexandresamson.freelancereceipt.ui.auth.LoginScreen
 import com.alexandresamson.freelancereceipt.ui.auth.RegisterScreen
 import com.alexandresamson.freelancereceipt.ui.biometric.BiometricLockScreen
-import com.alexandresamson.freelancereceipt.ui.dashboard.DashboardScreen
 import com.alexandresamson.freelancereceipt.ui.camera.CameraScreen
 import com.alexandresamson.freelancereceipt.ui.addreceipt.AddReceiptScreen
-import com.alexandresamson.freelancereceipt.ui.export.ExportScreen // NEU
+import com.alexandresamson.freelancereceipt.ui.dashboard.DashboardScreen
+import com.alexandresamson.freelancereceipt.ui.export.ExportScreen
 import org.koin.androidx.compose.koinViewModel
-import java.net.URLDecoder
-import java.net.URLEncoder
 
 sealed class Screen(val route: String) {
     data object Login      : Screen("login")
@@ -27,54 +22,65 @@ sealed class Screen(val route: String) {
     data object Biometric  : Screen("biometric")
     data object Dashboard  : Screen("dashboard")
     data object Camera     : Screen("camera")
-    data object Export     : Screen("export") // NEU
+    data object AddReceipt : Screen("add_receipt") // ← kein Parameter mehr in der Route
+    data object Export     : Screen("export")
+}
 
-    data object AddReceipt : Screen("add_receipt/{rawText}") {
-        fun createRoute(rawText: String) =
-            "add_receipt/${URLEncoder.encode(rawText, "UTF-8")}"
-    }
+// Einfacher In-Memory-Speicher für den OCR-Text
+// Sicherer als URL-Parameter bei Sonderzeichen
+object OcrResultHolder {
+    var rawText: String = ""
 }
 
 @Composable
 fun AppNavigation(navController: NavHostController = rememberNavController()) {
-    val authViewModel: AuthViewModel = koinViewModel()
-    val authState by authViewModel.authState.collectAsStateWithLifecycle()
 
-    val startDestination = if (authState.isLoggedIn) Screen.Biometric.route
-    else Screen.Login.route
-
-    NavHost(navController = navController, startDestination = startDestination) {
+    NavHost(
+        navController = navController,
+        startDestination = Screen.Login.route
+    ) {
 
         composable(Screen.Login.route) {
             LoginScreen(
-                onLoginSuccess  = { navController.navigate(Screen.Biometric.route) {
-                    popUpTo(Screen.Login.route) { inclusive = true }
-                }},
-                onNavigateToRegister = { navController.navigate(Screen.Register.route) }
+                onLoginSuccess = {
+                    navController.navigate(Screen.Biometric.route) {
+                        popUpTo(Screen.Login.route) { inclusive = true }
+                    }
+                },
+                onNavigateToRegister = {
+                    navController.navigate(Screen.Register.route)
+                }
             )
         }
 
         composable(Screen.Register.route) {
             RegisterScreen(
-                onRegisterSuccess = { navController.navigate(Screen.Biometric.route) {
-                    popUpTo(Screen.Login.route) { inclusive = true }
-                }},
-                onNavigateToLogin = { navController.popBackStack() }
+                onRegisterSuccess = {
+                    navController.navigate(Screen.Biometric.route) {
+                        popUpTo(Screen.Login.route) { inclusive = true }
+                    }
+                },
+                onNavigateToLogin = {
+                    navController.popBackStack()
+                }
             )
         }
 
         composable(Screen.Biometric.route) {
             BiometricLockScreen(
-                onUnlocked = { navController.navigate(Screen.Dashboard.route) {
-                    popUpTo(Screen.Biometric.route) { inclusive = true }
-                }}
+                onUnlocked = {
+                    navController.navigate(Screen.Dashboard.route) {
+                        popUpTo(Screen.Biometric.route) { inclusive = true }
+                    }
+                }
             )
         }
 
         composable(Screen.Dashboard.route) {
+            val authViewModel: AuthViewModel = koinViewModel()
             DashboardScreen(
                 onAddClick    = { navController.navigate(Screen.Camera.route) },
-                onExportClick = { navController.navigate(Screen.Export.route) }, // NEU
+                onExportClick = { navController.navigate(Screen.Export.route) },
                 onLogout      = {
                     authViewModel.signOut()
                     navController.navigate(Screen.Login.route) {
@@ -87,31 +93,31 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
         composable(Screen.Camera.route) {
             CameraScreen(
                 onTextRecognized = { rawText ->
-                    navController.navigate(Screen.AddReceipt.createRoute(rawText))
+                    // Text im Holder speichern, NICHT als URL-Parameter
+                    OcrResultHolder.rawText = rawText
+                    navController.navigate(Screen.AddReceipt.route)
                 },
                 onBack = { navController.popBackStack() }
             )
         }
 
-        composable(
-            route = Screen.AddReceipt.route,
-            arguments = listOf(navArgument("rawText") { type = NavType.StringType })
-        ) { backStackEntry ->
-            val encoded = backStackEntry.arguments?.getString("rawText") ?: ""
-            val rawText = URLDecoder.decode(encoded, "UTF-8")
-
+        composable(Screen.AddReceipt.route) {
             AddReceiptScreen(
-                rawOcrText = rawText,
+                // Text aus dem Holder lesen — keine URL-Dekodierung nötig
+                rawOcrText = OcrResultHolder.rawText,
                 onSaved = {
+                    OcrResultHolder.rawText = "" // aufräumen
                     navController.navigate(Screen.Dashboard.route) {
                         popUpTo(Screen.Dashboard.route) { inclusive = true }
                     }
                 },
-                onBack = { navController.popBackStack() }
+                onBack = {
+                    OcrResultHolder.rawText = "" // aufräumen
+                    navController.popBackStack()
+                }
             )
         }
 
-        // NEU: Export Route
         composable(Screen.Export.route) {
             ExportScreen(onBack = { navController.popBackStack() })
         }
