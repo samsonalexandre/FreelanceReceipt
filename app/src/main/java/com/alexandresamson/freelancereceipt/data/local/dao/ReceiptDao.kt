@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 interface ReceiptDao {
     // Speichert einen neuen Beleg. Bei gleicher ID wird überschrieben.
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertReceipt(receipt: ReceiptEntity)
+    suspend fun insertReceipt(receipt: ReceiptEntity): Long
 
     // Holt alle Belege sortiert nach dem neuesten Datum.
     // Flow aktualisiert die UI automatisch, wenn sich die Datenbank ändert!
@@ -20,5 +20,5 @@ interface ReceiptDao {
 
     // Löscht einen Beleg anhand seiner ID
     @Query("DELETE FROM receipts WHERE id = :receiptId")
-    suspend fun deleteReceiptById(receiptId: Long)
+    suspend fun deleteReceiptById(receiptId: Long): Int
 }

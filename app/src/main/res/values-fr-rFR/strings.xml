@@ -43,4 +43,20 @@
     <string name="label_tax_rate">Taux de TVA</string>
     <string name="label_category">Catégorie</string>
     <string name="action_save_receipt">Enregistrer le reçu</string>
+
+    <!-- Export -->
+    <string name="export_title">Exporter</string>
+    <string name="export_format_label">Choisir le format</string>
+    <string name="export_csv_title">Exporter en CSV</string>
+    <string name="export_csv_subtitle">S\'ouvre dans Excel, Numbers ou Google Sheets</string>
+    <string name="export_pdf_title">Exporter en PDF</string>
+    <string name="export_pdf_subtitle">Liste de reçus professionnelle à envoyer</string>
+    <string name="export_no_receipts">Aucun reçu à exporter</string>
+    <string name="export_summary_title">Résumé</string>
+    <string name="export_summary_count">Nombre de reçus</string>
+    <string name="export_summary_brutto">Montant total (Brut)</string>
+    <string name="export_summary_netto">Net</string>
+    <string name="export_summary_tax">TVA totale</string>
+    <string name="action_export">Exporter</string>
+    <string name="action_logout">Déconnexion</string>
 </resources>

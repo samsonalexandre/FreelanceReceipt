@@ -43,4 +43,20 @@
     <string name="label_tax_rate">Tipo de IVA</string>
     <string name="label_category">Categoría</string>
     <string name="action_save_receipt">Guardar recibo</string>
+
+    <!-- Export -->
+    <string name="export_title">Exportar</string>
+    <string name="export_format_label">Elegir formato</string>
+    <string name="export_csv_title">Exportar CSV</string>
+    <string name="export_csv_subtitle">Se abre en Excel, Numbers o Google Sheets</string>
+    <string name="export_pdf_title">Exportar PDF</string>
+    <string name="export_pdf_subtitle">Lista de recibos profesional para enviar</string>
+    <string name="export_no_receipts">No hay recibos para exportar</string>
+    <string name="export_summary_title">Resumen</string>
+    <string name="export_summary_count">Número de recibos</string>
+    <string name="export_summary_brutto">Importe total (Bruto)</string>
+    <string name="export_summary_netto">Neto</string>
+    <string name="export_summary_tax">IVA total</string>
+    <string name="action_export">Exportar</string>
+    <string name="action_logout">Cerrar sesión</string>
 </resources>

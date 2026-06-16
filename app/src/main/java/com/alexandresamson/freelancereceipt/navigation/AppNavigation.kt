@@ -16,6 +16,7 @@ import com.alexandresamson.freelancereceipt.ui.biometric.BiometricLockScreen
 import com.alexandresamson.freelancereceipt.ui.dashboard.DashboardScreen
 import com.alexandresamson.freelancereceipt.ui.camera.CameraScreen
 import com.alexandresamson.freelancereceipt.ui.addreceipt.AddReceiptScreen
+import com.alexandresamson.freelancereceipt.ui.export.ExportScreen // NEU
 import org.koin.androidx.compose.koinViewModel
 import java.net.URLDecoder
 import java.net.URLEncoder
@@ -25,11 +26,9 @@ sealed class Screen(val route: String) {
     data object Register   : Screen("register")
     data object Biometric  : Screen("biometric")
     data object Dashboard  : Screen("dashboard")
-
-    // NEU: Camera & AddReceipt Routen
     data object Camera     : Screen("camera")
+    data object Export     : Screen("export") // NEU
 
-    // OCR-Text als URL-encoded Argument übergeben
     data object AddReceipt : Screen("add_receipt/{rawText}") {
         fun createRoute(rawText: String) =
             "add_receipt/${URLEncoder.encode(rawText, "UTF-8")}"
@@ -41,7 +40,6 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
     val authViewModel: AuthViewModel = koinViewModel()
     val authState by authViewModel.authState.collectAsStateWithLifecycle()
 
-    // Startpunkt je nach Login-Status
     val startDestination = if (authState.isLoggedIn) Screen.Biometric.route
     else Screen.Login.route
 
@@ -65,7 +63,6 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
             )
         }
 
-        // Biometrie-Gate — nur passierbar, wenn entsperrt
         composable(Screen.Biometric.route) {
             BiometricLockScreen(
                 onUnlocked = { navController.navigate(Screen.Dashboard.route) {
@@ -76,8 +73,9 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
 
         composable(Screen.Dashboard.route) {
             DashboardScreen(
-                onAddClick  = { navController.navigate(Screen.Camera.route) }, // Update: Jetzt geht's zur Kamera!
-                onLogout    = {
+                onAddClick    = { navController.navigate(Screen.Camera.route) },
+                onExportClick = { navController.navigate(Screen.Export.route) }, // NEU
+                onLogout      = {
                     authViewModel.signOut()
                     navController.navigate(Screen.Login.route) {
                         popUpTo(0) { inclusive = true }
@@ -86,36 +84,36 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
             )
         }
 
-        // Kamera Screen
         composable(Screen.Camera.route) {
             CameraScreen(
                 onTextRecognized = { rawText ->
-                    // Wenn Text erkannt wurde, navigiere zum Formular und übergebe den Text
                     navController.navigate(Screen.AddReceipt.createRoute(rawText))
                 },
                 onBack = { navController.popBackStack() }
             )
         }
 
-        // Beleg Hinzufügen / Bearbeiten Screen
         composable(
             route = Screen.AddReceipt.route,
             arguments = listOf(navArgument("rawText") { type = NavType.StringType })
         ) { backStackEntry ->
-            // Text aus den Argumenten holen und dekodieren
             val encoded = backStackEntry.arguments?.getString("rawText") ?: ""
             val rawText = URLDecoder.decode(encoded, "UTF-8")
 
             AddReceiptScreen(
                 rawOcrText = rawText,
                 onSaved = {
-                    // Nach dem Speichern zurück zum Dashboard und den Stack aufräumen
                     navController.navigate(Screen.Dashboard.route) {
                         popUpTo(Screen.Dashboard.route) { inclusive = true }
                     }
                 },
                 onBack = { navController.popBackStack() }
             )
+        }
+
+        // NEU: Export Route
+        composable(Screen.Export.route) {
+            ExportScreen(onBack = { navController.popBackStack() })
         }
     }
 }

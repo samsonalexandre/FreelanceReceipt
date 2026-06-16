@@ -10,6 +10,9 @@ import org.koin.dsl.module
 import com.google.firebase.auth.FirebaseAuth
 import com.alexandresamson.freelancereceipt.ui.auth.AuthViewModel
 import com.alexandresamson.freelancereceipt.ui.addreceipt.AddReceiptViewModel
+import com.alexandresamson.freelancereceipt.data.repository.ExportRepository
+import com.alexandresamson.freelancereceipt.ui.export.ExportViewModel
+import org.koin.android.ext.koin.androidContext
 
 val appModule = module {
 
@@ -38,4 +41,7 @@ val appModule = module {
     viewModel { AuthViewModel(get()) }
 
     viewModel { AddReceiptViewModel(get(), get()) }
+
+    single { ExportRepository(androidContext()) }
+    viewModel { ExportViewModel(get(), get()) }
 }

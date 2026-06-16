@@ -8,12 +8,12 @@ plugins {
 
 android {
     namespace = "com.alexandresamson.freelancereceipt"
-    compileSdk = 37
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.alexandresamson.freelancereceipt"
         minSdk = 26
-        targetSdk = 36
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -29,16 +29,24 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
     buildFeatures {
         compose = true
     }
+
+    // Fix für die 16-KB-Warnung
+    packaging {
+        jniLibs {
+            useLegacyPackaging = false
+        }
+    }
 }
 
-// Dies ist der neue, korrekte Weg für Kotlin 2.0+ (behebt den Deprecation-Absturz)
 kotlin {
     compilerOptions {
         jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
@@ -46,26 +54,65 @@ kotlin {
 }
 
 dependencies {
-    // Room Datenbank
-    val roomVersion = "2.6.1"
-    implementation("androidx.room:room-runtime:$roomVersion")
-    implementation("androidx.room:room-ktx:$roomVersion")
-    ksp(libs.androidx.room.compiler)
 
-    // Standard-Compose-Setup via BOM
+    // ── Room ────────────────────────────────────────────────────────────────
+    val room_version = "2.7.1"
+    implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+    ksp("androidx.room:room-compiler:$room_version")
+
+    // ── Compose BOM + UI ────────────────────────────────────────────────────
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation("androidx.compose.material:material-icons-extended")
+    // Version kommt vom BOM — kein hardcoded "1.6.8" nötig
+
+    // ── Core & Lifecycle ─────────────────────────────────────────────────────
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
 
-    // ViewModel für Compose
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.2")
+    // ── Navigation ───────────────────────────────────────────────────────────
+    implementation("androidx.navigation:navigation-compose:2.8.9")
 
-    // Testing
+    // ── Biometrie ────────────────────────────────────────────────────────────
+    implementation("androidx.biometric:biometric:1.2.0-alpha05")
+    // Stabile Alternative falls alpha unerwünscht:
+    // implementation("androidx.biometric:biometric:1.1.0")
+
+    // ── Koin ─────────────────────────────────────────────────────────────────
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
+
+    // ── Firebase ─────────────────────────────────────────────────────────────
+    implementation(platform("com.google.firebase:firebase-bom:33.14.0"))
+    implementation("com.google.firebase:firebase-auth-ktx")
+
+    // ── Google Sign-In (moderner Credentials-Stack) ──────────────────────────
+    implementation("androidx.credentials:credentials:1.5.0")
+    implementation("androidx.credentials:credentials-play-services-auth:1.5.0")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+    // play-services-auth wird vom Credentials-Stack intern gezogen
+    // — kein direkter Eintrag mehr nötig
+
+    // ── CameraX ──────────────────────────────────────────────────────────────
+    val camerax_version = "1.4.2"
+    implementation("androidx.camera:camera-camera2:$camerax_version")
+    implementation("androidx.camera:camera-lifecycle:$camerax_version")
+    implementation("androidx.camera:camera-view:$camerax_version")
+
+    // ── ML Kit ───────────────────────────────────────────────────────────────
+    implementation("com.google.mlkit:text-recognition:16.0.1")
+
+    // ── Berechtigungen ───────────────────────────────────────────────────────
+    implementation("com.google.accompanist:accompanist-permissions:0.36.0")
+
+    // ── Testing ──────────────────────────────────────────────────────────────
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
@@ -73,39 +120,4 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
-
-    // Dependency Injection (Koin)
-    implementation(libs.koin.android)
-    implementation(libs.koin.androidx.compose)
-    implementation(libs.androidx.lifecycle.runtime.compose)
-
-    // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
-    implementation("com.google.firebase:firebase-auth-ktx")
-    implementation("com.google.android.gms:play-services-auth:21.2.0")
-
-// Navigation
-    implementation("androidx.navigation:navigation-compose:2.7.7")
-
-// Biometrie
-    implementation("androidx.biometric:biometric:1.1.0")
-    implementation("androidx.compose.material:material-icons-extended:1.6.8")
-
-// Credentials API (Google Sign-In modern)
-    implementation("androidx.credentials:credentials:1.2.2")
-    implementation("androidx.credentials:credentials-play-services-auth:1.2.2")
-    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
-
-    // CameraX
-    implementation("androidx.camera:camera-camera2:1.3.3")
-    implementation("androidx.camera:camera-lifecycle:1.3.3")
-    implementation("androidx.camera:camera-view:1.3.3")
-
-// ML Kit Text Recognition
-    implementation("com.google.mlkit:text-recognition:16.0.0")
-
-// Berechtigungen
-    implementation("com.google.accompanist:accompanist-permissions:0.34.0")
-
-    implementation("androidx.core:core-ktx:1.13.1")
 }

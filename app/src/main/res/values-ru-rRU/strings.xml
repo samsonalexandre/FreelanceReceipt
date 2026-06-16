@@ -43,4 +43,20 @@
     <string name="label_tax_rate">Ставка НДС</string>
     <string name="label_category">Категория</string>
     <string name="action_save_receipt">Сохранить чек</string>
+
+    <!-- Export -->
+    <string name="export_title">Экспорт</string>
+    <string name="export_format_label">Выберите формат</string>
+    <string name="export_csv_title">Экспорт CSV</string>
+    <string name="export_csv_subtitle">Открывается в Excel, Numbers или Google Sheets</string>
+    <string name="export_pdf_title">Экспорт PDF</string>
+    <string name="export_pdf_subtitle">Профессиональный список чеков для отправки</string>
+    <string name="export_no_receipts">Нет чеков для экспорта</string>
+    <string name="export_summary_title">Сводка</string>
+    <string name="export_summary_count">Количество чеков</string>
+    <string name="export_summary_brutto">Общая сумма (брутто)</string>
+    <string name="export_summary_netto">Нетто</string>
+    <string name="export_summary_tax">Итого НДС</string>
+    <string name="action_export">Экспорт</string>
+    <string name="action_logout">Выйти</string>
 </resources>

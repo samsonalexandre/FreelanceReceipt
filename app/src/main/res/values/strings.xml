@@ -44,4 +44,20 @@
     <string name="label_tax_rate">Tax rate</string>
     <string name="label_category">Category</string>
     <string name="action_save_receipt">Save receipt</string>
+
+    <!-- Export -->
+    <string name="export_title">Export</string>
+    <string name="export_format_label">Choose format</string>
+    <string name="export_csv_title">Export CSV</string>
+    <string name="export_csv_subtitle">Opens in Excel, Numbers, or Google Sheets</string>
+    <string name="export_pdf_title">Export PDF</string>
+    <string name="export_pdf_subtitle">Professional receipt list for sending</string>
+    <string name="export_no_receipts">No receipts available to export</string>
+    <string name="export_summary_title">Summary</string>
+    <string name="export_summary_count">Number of receipts</string>
+    <string name="export_summary_brutto">Total amount (Gross)</string>
+    <string name="export_summary_netto">Net</string>
+    <string name="export_summary_tax">Total tax</string>
+    <string name="action_export">Export</string>
+    <string name="action_logout">Logout</string>
 </resources>

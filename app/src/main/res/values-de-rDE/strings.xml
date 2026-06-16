@@ -43,4 +43,20 @@
     <string name="label_tax_rate">MwSt.-Satz</string>
     <string name="label_category">Kategorie</string>
     <string name="action_save_receipt">Beleg speichern</string>
+
+    <!-- Export -->
+    <string name="export_title">Exportieren</string>
+    <string name="export_format_label">Format wählen</string>
+    <string name="export_csv_title">CSV exportieren</string>
+    <string name="export_csv_subtitle">Öffnet sich in Excel, Numbers oder Google Sheets</string>
+    <string name="export_pdf_title">PDF exportieren</string>
+    <string name="export_pdf_subtitle">Professionelle Belegliste zum Versenden</string>
+    <string name="export_no_receipts">Keine Belege zum Exportieren vorhanden</string>
+    <string name="export_summary_title">Zusammenfassung</string>
+    <string name="export_summary_count">Anzahl Belege</string>
+    <string name="export_summary_brutto">Gesamtbetrag (Brutto)</string>
+    <string name="export_summary_netto">Netto</string>
+    <string name="export_summary_tax">MwSt. gesamt</string>
+    <string name="action_export">Exportieren</string>
+    <string name="action_logout">Abmelden</string>
 </resources>

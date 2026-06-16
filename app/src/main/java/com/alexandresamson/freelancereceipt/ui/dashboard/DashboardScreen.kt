@@ -6,6 +6,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.FileDownload
+import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,6 +30,7 @@ import java.util.Locale
 fun DashboardScreen(
     viewModel: ReceiptViewModel = koinViewModel(),
     onAddClick: () -> Unit = {},
+    onExportClick: () -> Unit,
     onLogout: () -> Unit = {}
 ) {
     // collectAsStateWithLifecycle beachtet automatisch den Lifecycle der App (schont Akku)
@@ -36,18 +39,42 @@ fun DashboardScreen(
     DashboardContent(
         receipts = receipts,
         onAddClick = onAddClick,
+        onExportClick = onExportClick,
+        onLogout = onLogout,
         onDeleteClick = { viewModel.deleteReceipt(it) }
     )
 }
 
 // Reines Compose ohne ViewModel – Perfekt für saubere Previews und Tests
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DashboardContent(
     receipts: List<ReceiptEntity>,
     onAddClick: () -> Unit,
+    onExportClick: () -> Unit,
+    onLogout: () -> Unit,
     onDeleteClick: (Long) -> Unit
 ) {
     Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.app_name)) },
+                actions = {
+                    IconButton(onClick = onExportClick) {
+                        Icon(
+                            imageVector = Icons.Default.FileDownload,
+                            contentDescription = stringResource(R.string.action_export)
+                        )
+                    }
+                    IconButton(onClick = onLogout) {
+                        Icon(
+                            imageVector = Icons.Default.Logout,
+                            contentDescription = stringResource(R.string.action_logout)
+                        )
+                    }
+                }
+            )
+        },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = onAddClick,
@@ -192,6 +219,8 @@ private fun DashboardEmptyPreviewDe() {
         DashboardContent(
             receipts = emptyList(),
             onAddClick = {},
+            onExportClick = {},
+            onLogout = {},
             onDeleteClick = {}
         )
     }
@@ -221,6 +250,8 @@ private fun DashboardWithDataPreviewDe() {
                 )
             ),
             onAddClick = {},
+            onExportClick = {},
+            onLogout = {},
             onDeleteClick = {}
         )
     }
