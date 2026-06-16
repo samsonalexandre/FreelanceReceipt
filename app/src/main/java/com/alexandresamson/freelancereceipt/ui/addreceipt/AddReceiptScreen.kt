@@ -1,6 +1,5 @@
 package com.alexandresamson.freelancereceipt.ui.addreceipt
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -16,24 +15,23 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexandresamson.freelancereceipt.R
+import com.alexandresamson.freelancereceipt.ui.common.TaxBreakdownCard
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddReceiptScreen(
-    rawOcrText: String,                 // Kommt von CameraScreen via Navigation-Argument
+    rawOcrText: String,
     onSaved: () -> Unit,
     onBack: () -> Unit,
     viewModel: AddReceiptViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    // OCR-Text einmalig beim Öffnen des Screens verarbeiten
     LaunchedEffect(rawOcrText) {
         if (rawOcrText.isNotBlank()) viewModel.onRawTextReceived(rawOcrText)
     }
 
-    // Nach erfolgreichem Speichern zurück
     LaunchedEffect(uiState.isSaved) {
         if (uiState.isSaved) onSaved()
     }
@@ -44,8 +42,10 @@ fun AddReceiptScreen(
                 title = { Text(stringResource(R.string.add_receipt_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack,
-                            contentDescription = stringResource(R.string.action_back))
+                        Icon(
+                            Icons.Default.ArrowBack,
+                            contentDescription = stringResource(R.string.action_back)
+                        )
                     }
                 }
             )
@@ -59,22 +59,7 @@ fun AddReceiptScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Spacer(Modifier.height(8.dp))
-
-            // ── TEMPORÄR DEBUG — danach löschen ──────────────────────────
-            /*
-            if (rawOcrText.isNotBlank()) {
-                Text(
-                    text = "OCR-DEBUG:\n$rawOcrText",
-                    style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.errorContainer)
-                        .padding(8.dp)
-                )
-            }
-            // ─────────────────────────────────────────────────────────────
-             */
+            Spacer(Modifier.height(4.dp))
 
             OutlinedTextField(
                 value = uiState.merchant,
@@ -104,84 +89,26 @@ fun AddReceiptScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            // ── MwSt-Aufschlüsselung — automatisch berechnet ──
-            val brutto = uiState.amountEuro.replace(",", ".").toDoubleOrNull() ?: 0.0
-            val taxRateValue = uiState.taxRate.toDoubleOrNull() ?: 19.0
-            val netto = brutto / (1 + taxRateValue / 100.0)
-            val mwstBetrag = brutto - netto
+            // MwSt-Aufschlüsselung
+            TaxBreakdownCard(
+                amountEuro = uiState.amountEuro,
+                taxRate = uiState.taxRate
+            )
 
-            if (brutto > 0) {
-                Card(
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceVariant
-                    ),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Column(
-                        modifier = Modifier.padding(12.dp),
-                        verticalArrangement = Arrangement.spacedBy(4.dp)
-                    ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Text("Netto", style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant)
-                            Text(
-                                "%.2f €".format(netto),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Text(
-                                "MwSt. (${uiState.taxRate}%)",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                            Text(
-                                "%.2f €".format(mwstBetrag),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                        HorizontalDivider(modifier = Modifier.padding(vertical = 2.dp))
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Text(
-                                "Brutto",
-                                style = MaterialTheme.typography.bodyMedium,
-                                fontWeight = FontWeight.Bold
-                            )
-                            Text(
-                                "%.2f €".format(brutto),
-                                style = MaterialTheme.typography.bodyMedium,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                        }
-                    }
-                }
-            }
-            // ──────────────────────────────────────────────────────────
-
-            // Kategorie-Dropdown
             CategoryDropdown(
                 selected = uiState.category,
                 onSelected = viewModel::onCategoryChange
             )
 
             uiState.error?.let {
-                Text(it, color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.bodySmall)
+                Text(
+                    it,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall
+                )
             }
 
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(4.dp))
 
             Button(
                 onClick = { viewModel.saveReceipt(System.currentTimeMillis()) },
@@ -194,6 +121,7 @@ fun AddReceiptScreen(
                     Text(stringResource(R.string.action_save_receipt))
                 }
             }
+
             Spacer(Modifier.height(16.dp))
         }
     }
@@ -203,7 +131,6 @@ fun AddReceiptScreen(
 @Composable
 private fun CategoryDropdown(selected: String, onSelected: (String) -> Unit) {
     var expanded by remember { mutableStateOf(false) }
-
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { expanded = it }
@@ -216,7 +143,10 @@ private fun CategoryDropdown(selected: String, onSelected: (String) -> Unit) {
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
             modifier = Modifier.menuAnchor().fillMaxWidth()
         )
-        ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
             CATEGORIES.forEach { category ->
                 DropdownMenuItem(
                     text = { Text(category) },

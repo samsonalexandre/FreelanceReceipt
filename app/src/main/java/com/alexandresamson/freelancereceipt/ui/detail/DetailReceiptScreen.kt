@@ -1,5 +1,6 @@
 package com.alexandresamson.freelancereceipt.ui.detail
 
+import com.alexandresamson.freelancereceipt.ui.common.TaxBreakdownCard
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -153,6 +154,11 @@ fun DetailReceiptScreen(
                 suffix = { Text("%") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth()
+            )
+
+            TaxBreakdownCard(
+                amountEuro = uiState.amountEuro,
+                taxRate    = uiState.taxRate
             )
 
             // Kategorie-Dropdown — gleiche Komponente wie AddReceiptScreen
