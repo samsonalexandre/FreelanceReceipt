@@ -59,4 +59,12 @@
     <string name="export_summary_tax">Итого НДС</string>
     <string name="action_export">Экспорт</string>
     <string name="action_logout">Выйти</string>
+
+    <string name="detail_title">Редактировать чек</string>
+    <string name="detail_date_label">Дата чека: %s</string>
+    <string name="detail_delete_title">Удалить чек?</string>
+    <string name="detail_delete_message">Этот чек будет безвозвратно удален.</string>
+    <string name="action_save_changes">Сохранить изменения</string>
+    <string name="action_delete_confirm">Удалить</string>
+    <string name="action_cancel">Отмена</string>
 </resources>

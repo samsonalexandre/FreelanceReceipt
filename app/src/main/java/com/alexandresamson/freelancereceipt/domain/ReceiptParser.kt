@@ -12,37 +12,56 @@ data class ParsedReceipt(
 
 object ReceiptParser {
 
-    // Regex-Muster für deutsche/europäische Belege
-    private val AMOUNT_PATTERNS = listOf(
-        // "SUMME 12,99 €", "Total: 8.50 EUR", "Gesamt 4,20"
-        Regex("""(?:summe|total|gesamt|betrag|endbetrag|zahlung|bezahlt)[^\d]*(\d{1,4}[.,]\d{2})""",
+    // Brutto-Muster — sucht nach "Brutto" gefolgt von einem Betrag
+    // auf derselben ODER der nächsten Zeile
+    private val BRUTTO_PATTERNS = listOf(
+        // "Brutto 20,03" oder "Brutto: 20,03" auf einer Zeile
+        Regex("""brutto[:\s]*(\d{1,4}[.,]\d{2})""", RegexOption.IGNORE_CASE),
+        // "Gesantoetrag" (OCR-Fehler für "Gesamtbetrag") gefolgt von Betrag
+        Regex("""gesant[^\d]*(\d{1,4}[.,]\d{2})""", RegexOption.IGNORE_CASE),
+        // Standard Summen-Keywords
+        Regex("""(?:summe|total|gesamt|endbetrag|zahlung|zu.zahlen)[^\d]*(\d{1,4}[.,]\d{2})""",
             RegexOption.IGNORE_CASE),
-        // Fallback: größter Betrag im Text
-        Regex("""(\d{1,4}[.,]\d{2})\s*[€eEuUrR]""")
+    )
+
+    // Wenn Brutto-Label auf einer Zeile steht und der Betrag auf der nächsten
+    private val BRUTTO_LABEL_PATTERN = Regex(
+        """^brutto$""", RegexOption.IGNORE_CASE
     )
 
     private val TAX_PATTERNS = listOf(
+        // "A:19,00%" Format wie auf diesem Bon
+        Regex("""[A-Z]:\s*(\d{1,2})[.,]\d{2}\s*%"""),
         Regex("""(\d{1,2})\s*%\s*(?:mwst|ust|vat|tax)""", RegexOption.IGNORE_CASE),
         Regex("""(?:mwst|ust|vat|tax)[^\d]*(\d{1,2})\s*%""", RegexOption.IGNORE_CASE)
     )
 
     private val DATE_PATTERNS = listOf(
-        Regex("""(\d{2})[./\-](\d{2})[./\-](\d{2,4})"""),   // 24.12.2024 oder 24/12/24
-        Regex("""(\d{4})[./\-](\d{2})[./\-](\d{2})""")       // 2024-12-24
+        Regex("""(\d{2})[./\-](\d{2})[./\-](\d{4})"""),  // 15.06.2026
+        Regex("""(\d{2})[./\-](\d{2})[./\-](\d{2})"""),  // 15.06.26
+        Regex("""(\d{4})[./\-](\d{2})[./\-](\d{2})""")   // 2026-06-15
     )
 
-    // Einfache Kategorie-Erkennung anhand von Keywords
     private val CATEGORY_KEYWORDS = mapOf(
-        "Lebensmittel"  to listOf("rewe", "edeka", "aldi", "lidl", "penny", "netto",
-            "bäcker", "metzger", "markt"),
-        "Fahrtkosten"   to listOf("shell", "aral", "bp", "esso", "tankstelle",
-            "bahn", "db ", "taxi", "uber", "parking"),
-        "Büro"          to listOf("staples", "bürobedarf", "schreibwaren",
-            "canon", "epson", "drucker"),
-        "Restaurant"    to listOf("restaurant", "café", "cafe", "bistro",
-            "pizza", "burger", "mcdonald", "subway"),
-        "Software"      to listOf("amazon", "google", "apple", "microsoft",
-            "adobe", "github", "digitalocean")
+        "Fahrtkosten" to listOf(
+            "shell", "aral", "bp", "esso", "tankstelle", "station", "sb station",
+            "superbenzin", "benzin", "diesel", "kraftstoff", "tanken",
+            "bahn", "db ", "taxi", "uber", "parking", "zapfsäule", "zp "
+        ),
+        "Lebensmittel" to listOf(
+            "rewe", "edeka", "aldi", "lidl", "penny", "netto",
+            "bäcker", "metzger", "markt", "supermarkt"
+        ),
+        "Büro" to listOf(
+            "staples", "bürobedarf", "schreibwaren", "canon", "epson", "drucker"
+        ),
+        "Restaurant" to listOf(
+            "restaurant", "café", "cafe", "bistro", "pizza", "burger",
+            "mcdonald", "subway", "döner"
+        ),
+        "Software" to listOf(
+            "amazon", "google", "apple", "microsoft", "adobe", "github", "digitalocean"
+        )
     )
 
     fun parse(rawText: String): ParsedReceipt {
@@ -50,7 +69,7 @@ object ReceiptParser {
         val lowerText = rawText.lowercase()
 
         val merchant  = extractMerchant(lines)
-        val amount    = extractAmount(lowerText)
+        val amount    = extractAmount(lines, lowerText)
         val taxRate   = extractTaxRate(lowerText)
         val timestamp = extractTimestamp(rawText)
         val category  = detectCategory(lowerText, merchant)
@@ -64,31 +83,64 @@ object ReceiptParser {
         )
     }
 
-    // Erste nicht-leere Zeile = meist Händlername
     private fun extractMerchant(lines: List<String>): String =
-        lines.firstOrNull { it.length > 2 && !it.all { c -> c.isDigit() || c in ".,:-/" } }
-            ?.take(40)
-            ?: "Unbekannt"
+        lines.firstOrNull {
+            it.length > 2
+                    && !it.all { c -> c.isDigit() || c in ".,:-/" }
+                    && !it.startsWith("Beleg")
+                    && !it.startsWith("Tel")
+                    && !it.startsWith("Ubj")
+        }?.take(40) ?: "Unbekannt"
 
-    private fun extractAmount(text: String): Long {
-        for (pattern in AMOUNT_PATTERNS) {
-            val match = pattern.find(text) ?: continue
+    private fun extractAmount(lines: List<String>, lowerText: String): Long {
+        // Strategie 1: Brutto-Keyword auf gleicher Zeile
+        for (pattern in BRUTTO_PATTERNS) {
+            val match = pattern.find(lowerText) ?: continue
             val raw = match.groupValues[1].replace(",", ".")
-            return (raw.toDoubleOrNull() ?: continue).let { (it * 100).toLong() }
+            val value = raw.toDoubleOrNull() ?: continue
+            if (value > 0) return (value * 100).toLong()
         }
-        // Fallback: größten Betrag im Text nehmen
-        val allAmounts = Regex("""(\d{1,4}[.,]\d{2})""").findAll(text)
+
+        // Strategie 2: "Brutto" auf einer Zeile, Betrag auf der nächsten
+        for (i in lines.indices) {
+            if (BRUTTO_LABEL_PATTERN.matches(lines[i])) {
+                // Nächste Zeile die einen Betrag enthält
+                for (j in (i + 1)..minOf(i + 3, lines.lastIndex)) {
+                    val amountMatch = Regex("""^(\d{1,4}[.,]\d{2})$""").find(lines[j].trim())
+                    if (amountMatch != null) {
+                        val value = amountMatch.groupValues[1].replace(",", ".").toDoubleOrNull()
+                        if (value != null && value > 0) return (value * 100).toLong()
+                    }
+                }
+            }
+        }
+
+        // Strategie 3: "20,03 EUR" Format (Betrag gefolgt von EUR)
+        val eurPattern = Regex("""(\d{1,4}[.,]\d{2})\s*EUR""", RegexOption.IGNORE_CASE)
+        val eurMatches = eurPattern.findAll(lowerText)
             .mapNotNull { it.groupValues[1].replace(",", ".").toDoubleOrNull() }
+            .filter { it > 0 }
+            .toList()
+        if (eurMatches.isNotEmpty()) {
+            // Nimm den größten EUR-Betrag (wahrscheinlich Brutto)
+            return (eurMatches.max() * 100).toLong()
+        }
+
+        // Strategie 4: Fallback — größter Betrag im Text
+        val allAmounts = Regex("""(\d{1,4}[.,]\d{2})""").findAll(lowerText)
+            .mapNotNull { it.groupValues[1].replace(",", ".").toDoubleOrNull() }
+            .filter { it > 0.5 } // Cent-Beträge rausfiltern
             .toList()
         return ((allAmounts.maxOrNull() ?: 0.0) * 100).toLong()
     }
 
-    private fun extractTaxRate(text: String): Double {
+    private fun extractTaxRate(lowerText: String): Double {
         for (pattern in TAX_PATTERNS) {
-            val match = pattern.find(text) ?: continue
-            return match.groupValues[1].toDoubleOrNull() ?: continue
+            val match = pattern.find(lowerText) ?: continue
+            val rate = match.groupValues[1].toDoubleOrNull() ?: continue
+            if (rate in 1.0..30.0) return rate // Plausibilitätsprüfung
         }
-        return 19.0 // Deutscher Standard-MwSt-Satz
+        return 19.0
     }
 
     private fun extractTimestamp(text: String): Long {
@@ -97,17 +149,29 @@ object ReceiptParser {
             val groups = match.groupValues
             return try {
                 val cal = Calendar.getInstance()
-                if (groups[1].length == 4) {
-                    // Format YYYY-MM-DD
-                    cal.set(groups[1].toInt(), groups[2].toInt() - 1, groups[3].toInt())
-                } else {
-                    // Format DD.MM.YYYY oder DD.MM.YY
-                    val year = groups[3].toInt().let { if (it < 100) it + 2000 else it }
-                    cal.set(year, groups[2].toInt() - 1, groups[1].toInt())
+                when {
+                    // YYYY-MM-DD
+                    groups[1].length == 4 -> cal.set(
+                        groups[1].toInt(),
+                        groups[2].toInt() - 1,
+                        groups[3].toInt()
+                    )
+                    // DD.MM.YYYY
+                    groups[3].length == 4 -> cal.set(
+                        groups[3].toInt(),
+                        groups[2].toInt() - 1,
+                        groups[1].toInt()
+                    )
+                    // DD.MM.YY
+                    else -> cal.set(
+                        groups[3].toInt() + 2000,
+                        groups[2].toInt() - 1,
+                        groups[1].toInt()
+                    )
                 }
                 cal.timeInMillis
             } catch (e: Exception) {
-                System.currentTimeMillis()
+                continue // nächstes Pattern versuchen
             }
         }
         return System.currentTimeMillis()

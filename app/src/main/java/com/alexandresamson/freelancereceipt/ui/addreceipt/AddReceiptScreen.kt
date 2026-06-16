@@ -1,5 +1,6 @@
 package com.alexandresamson.freelancereceipt.ui.addreceipt
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -10,6 +11,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -59,6 +61,21 @@ fun AddReceiptScreen(
         ) {
             Spacer(Modifier.height(8.dp))
 
+            // ── TEMPORÄR DEBUG — danach löschen ──────────────────────────
+            /*
+            if (rawOcrText.isNotBlank()) {
+                Text(
+                    text = "OCR-DEBUG:\n$rawOcrText",
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.errorContainer)
+                        .padding(8.dp)
+                )
+            }
+            // ─────────────────────────────────────────────────────────────
+             */
+
             OutlinedTextField(
                 value = uiState.merchant,
                 onValueChange = viewModel::onMerchantChange,
@@ -86,6 +103,72 @@ fun AddReceiptScreen(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth()
             )
+
+            // ── MwSt-Aufschlüsselung — automatisch berechnet ──
+            val brutto = uiState.amountEuro.replace(",", ".").toDoubleOrNull() ?: 0.0
+            val taxRateValue = uiState.taxRate.toDoubleOrNull() ?: 19.0
+            val netto = brutto / (1 + taxRateValue / 100.0)
+            val mwstBetrag = brutto - netto
+
+            if (brutto > 0) {
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(
+                        modifier = Modifier.padding(12.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text("Netto", style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text(
+                                "%.2f €".format(netto),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                "MwSt. (${uiState.taxRate}%)",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            Text(
+                                "%.2f €".format(mwstBetrag),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                        HorizontalDivider(modifier = Modifier.padding(vertical = 2.dp))
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                "Brutto",
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                "%.2f €".format(brutto),
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                    }
+                }
+            }
+            // ──────────────────────────────────────────────────────────
 
             // Kategorie-Dropdown
             CategoryDropdown(

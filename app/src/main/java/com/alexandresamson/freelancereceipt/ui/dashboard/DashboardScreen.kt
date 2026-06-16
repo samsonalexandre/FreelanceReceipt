@@ -31,21 +31,21 @@ fun DashboardScreen(
     viewModel: ReceiptViewModel = koinViewModel(),
     onAddClick: () -> Unit = {},
     onExportClick: () -> Unit,
-    onLogout: () -> Unit = {}
+    onLogout: () -> Unit = {},
+    onItemClick: (Long) -> Unit = {}
 ) {
-    // collectAsStateWithLifecycle beachtet automatisch den Lifecycle der App (schont Akku)
     val receipts by viewModel.receipts.collectAsStateWithLifecycle()
 
     DashboardContent(
-        receipts = receipts,
-        onAddClick = onAddClick,
+        receipts      = receipts,
+        onAddClick    = onAddClick,
         onExportClick = onExportClick,
-        onLogout = onLogout,
-        onDeleteClick = { viewModel.deleteReceipt(it) }
+        onLogout      = onLogout,
+        onDeleteClick = { viewModel.deleteReceipt(it) },
+        onItemClick   = onItemClick
     )
 }
 
-// Reines Compose ohne ViewModel – Perfekt für saubere Previews und Tests
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DashboardContent(
@@ -53,7 +53,8 @@ private fun DashboardContent(
     onAddClick: () -> Unit,
     onExportClick: () -> Unit,
     onLogout: () -> Unit,
-    onDeleteClick: (Long) -> Unit
+    onDeleteClick: (Long) -> Unit,
+    onItemClick: (Long) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -91,9 +92,10 @@ private fun DashboardContent(
             EmptyState(modifier = Modifier.padding(paddingValues))
         } else {
             ReceiptList(
-                receipts = receipts,
+                receipts      = receipts,
                 onDeleteClick = onDeleteClick,
-                modifier = Modifier.padding(paddingValues)
+                onItemClick   = onItemClick,
+                modifier      = Modifier.padding(paddingValues)
             )
         }
     }
@@ -127,6 +129,7 @@ private fun EmptyState(modifier: Modifier = Modifier) {
 private fun ReceiptList(
     receipts: List<ReceiptEntity>,
     onDeleteClick: (Long) -> Unit,
+    onItemClick: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -136,11 +139,12 @@ private fun ReceiptList(
     ) {
         items(
             items = receipts,
-            key = { it.id } // Stabile Keys -> effiziente Recomposition bei Listen-Änderungen
+            key = { it.id }
         ) { receipt ->
             ReceiptItem(
-                receipt = receipt,
-                onDeleteClick = { onDeleteClick(receipt.id) }
+                receipt       = receipt,
+                onDeleteClick = { onDeleteClick(receipt.id) },
+                onItemClick   = { onItemClick(receipt.id) }
             )
         }
     }
@@ -149,12 +153,14 @@ private fun ReceiptList(
 @Composable
 private fun ReceiptItem(
     receipt: ReceiptEntity,
-    onDeleteClick: () -> Unit
+    onDeleteClick: () -> Unit,
+    onItemClick: () -> Unit
 ) {
     val currencyFormat = NumberFormat.getCurrencyInstance(Locale.getDefault())
     val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
 
     Card(
+        onClick = onItemClick,
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
@@ -186,14 +192,12 @@ private fun ReceiptItem(
             }
             Column(horizontalAlignment = Alignment.End) {
                 Text(
-                    // Cent -> Euro/Währung für die Anzeige
                     text = currencyFormat.format(receipt.amountInCents / 100.0),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary
                 )
                 Text(
-                    // Hier greifen wir auf den %.1f Platzhalter in der XML zu (ohne .toInt())
                     text = stringResource(R.string.receipt_tax_rate, receipt.taxRate),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -210,18 +214,19 @@ private fun ReceiptItem(
     }
 }
 
-// --- Previews (kein ViewModel nötig, sofort sichtbar im Studio) ---
+// --- Previews ---
 
 @Preview(showBackground = true, showSystemUi = true, locale = "de")
 @Composable
 private fun DashboardEmptyPreviewDe() {
     MaterialTheme {
         DashboardContent(
-            receipts = emptyList(),
-            onAddClick = {},
+            receipts      = emptyList(),
+            onAddClick    = {},
             onExportClick = {},
-            onLogout = {},
-            onDeleteClick = {}
+            onLogout      = {},
+            onDeleteClick = {},
+            onItemClick   = {}   // ← war vergessen
         )
     }
 }
@@ -233,26 +238,27 @@ private fun DashboardWithDataPreviewDe() {
         DashboardContent(
             receipts = listOf(
                 ReceiptEntity(
-                    id = 1,
-                    timestamp = System.currentTimeMillis(),
-                    merchant = "REWE City",
+                    id            = 1,
+                    timestamp     = System.currentTimeMillis(),
+                    merchant      = "REWE City",
                     amountInCents = 4799,
-                    taxRate = 19.0,
-                    category = "Lebensmittel"
+                    taxRate       = 19.0,
+                    category      = "Lebensmittel"
                 ),
                 ReceiptEntity(
-                    id = 2,
-                    timestamp = System.currentTimeMillis() - 86_400_000, // minus 1 Tag
-                    merchant = "Tankstelle Shell",
+                    id            = 2,
+                    timestamp     = System.currentTimeMillis() - 86_400_000,
+                    merchant      = "Tankstelle Shell",
                     amountInCents = 8950,
-                    taxRate = 19.0,
-                    category = "Fahrtkosten"
+                    taxRate       = 19.0,
+                    category      = "Fahrtkosten"
                 )
             ),
-            onAddClick = {},
+            onAddClick    = {},
             onExportClick = {},
-            onLogout = {},
-            onDeleteClick = {}
+            onLogout      = {},
+            onDeleteClick = {},
+            onItemClick   = {}   // ← war vergessen
         )
     }
 }

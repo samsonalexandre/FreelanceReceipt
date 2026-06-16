@@ -59,4 +59,12 @@
     <string name="export_summary_tax">IVA total</string>
     <string name="action_export">Exportar</string>
     <string name="action_logout">Cerrar sesión</string>
+
+    <string name="detail_title">Editar recibo</string>
+    <string name="detail_date_label">Fecha del recibo: %s</string>
+    <string name="detail_delete_title">¿Eliminar recibo?</string>
+    <string name="detail_delete_message">Este recibo se eliminará permanentemente.</string>
+    <string name="action_save_changes">Guardar cambios</string>
+    <string name="action_delete_confirm">Eliminar</string>
+    <string name="action_cancel">Cancelar</string>
 </resources>

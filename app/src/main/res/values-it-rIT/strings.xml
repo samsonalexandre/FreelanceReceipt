@@ -59,4 +59,12 @@
     <string name="export_summary_tax">IVA totale</string>
     <string name="action_export">Esporta</string>
     <string name="action_logout">Esci</string>
+
+    <string name="detail_title">Modifica ricevuta</string>
+    <string name="detail_date_label">Data ricevuta: %s</string>
+    <string name="detail_delete_title">Eliminare la ricevuta?</string>
+    <string name="detail_delete_message">Questa ricevuta verrà eliminata definitivamente.</string>
+    <string name="action_save_changes">Salva modifiche</string>
+    <string name="action_delete_confirm">Elimina</string>
+    <string name="action_cancel">Annulla</string>
 </resources>

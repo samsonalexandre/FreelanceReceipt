@@ -59,4 +59,12 @@
     <string name="export_summary_tax">TVA totale</string>
     <string name="action_export">Exporter</string>
     <string name="action_logout">Déconnexion</string>
+
+    <string name="detail_title">Modifier le reçu</string>
+    <string name="detail_date_label">Date du reçu : %s</string>
+    <string name="detail_delete_title">Supprimer le reçu ?</string>
+    <string name="detail_delete_message">Ce reçu sera définitivement supprimé.</string>
+    <string name="action_save_changes">Enregistrer les modifications</string>
+    <string name="action_delete_confirm">Supprimer</string>
+    <string name="action_cancel">Annuler</string>
 </resources>

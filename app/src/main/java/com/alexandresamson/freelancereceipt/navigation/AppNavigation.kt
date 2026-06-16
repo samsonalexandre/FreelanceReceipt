@@ -3,9 +3,11 @@ package com.alexandresamson.freelancereceipt.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.alexandresamson.freelancereceipt.ui.auth.AuthViewModel
 import com.alexandresamson.freelancereceipt.ui.auth.LoginScreen
 import com.alexandresamson.freelancereceipt.ui.auth.RegisterScreen
@@ -13,6 +15,7 @@ import com.alexandresamson.freelancereceipt.ui.biometric.BiometricLockScreen
 import com.alexandresamson.freelancereceipt.ui.camera.CameraScreen
 import com.alexandresamson.freelancereceipt.ui.addreceipt.AddReceiptScreen
 import com.alexandresamson.freelancereceipt.ui.dashboard.DashboardScreen
+import com.alexandresamson.freelancereceipt.ui.detail.DetailReceiptScreen
 import com.alexandresamson.freelancereceipt.ui.export.ExportScreen
 import org.koin.androidx.compose.koinViewModel
 
@@ -24,6 +27,10 @@ sealed class Screen(val route: String) {
     data object Camera     : Screen("camera")
     data object AddReceipt : Screen("add_receipt") // ← kein Parameter mehr in der Route
     data object Export     : Screen("export")
+
+    data object Detail : Screen("detail/{receiptId}") {
+        fun createRoute(id: Long) = "detail/$id"
+    }
 }
 
 // Einfacher In-Memory-Speicher für den OCR-Text
@@ -39,6 +46,22 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
         navController = navController,
         startDestination = Screen.Login.route
     ) {
+
+        composable(
+            route = Screen.Detail.route,
+            arguments = listOf(navArgument("receiptId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val receiptId = backStackEntry.arguments?.getLong("receiptId") ?: return@composable
+            DetailReceiptScreen(
+                receiptId = receiptId,
+                onBack    = { navController.popBackStack() },
+                onDeleted = {
+                    navController.navigate(Screen.Dashboard.route) {
+                        popUpTo(Screen.Dashboard.route) { inclusive = true }
+                    }
+                }
+            )
+        }
 
         composable(Screen.Login.route) {
             LoginScreen(
@@ -81,6 +104,7 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
             DashboardScreen(
                 onAddClick    = { navController.navigate(Screen.Camera.route) },
                 onExportClick = { navController.navigate(Screen.Export.route) },
+                onItemClick   = { id -> navController.navigate(Screen.Detail.createRoute(id)) },
                 onLogout      = {
                     authViewModel.signOut()
                     navController.navigate(Screen.Login.route) {

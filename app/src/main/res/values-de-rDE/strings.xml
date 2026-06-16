@@ -59,4 +59,12 @@
     <string name="export_summary_tax">MwSt. gesamt</string>
     <string name="action_export">Exportieren</string>
     <string name="action_logout">Abmelden</string>
+
+    <string name="detail_title">Beleg bearbeiten</string>
+    <string name="detail_date_label">Belegdatum: %s</string>
+    <string name="detail_delete_title">Beleg löschen?</string>
+    <string name="detail_delete_message">Dieser Beleg wird unwiderruflich gelöscht.</string>
+    <string name="action_save_changes">Änderungen speichern</string>
+    <string name="action_delete_confirm">Löschen</string>
+    <string name="action_cancel">Abbrechen</string>
 </resources>

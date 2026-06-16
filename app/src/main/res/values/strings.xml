@@ -60,4 +60,12 @@
     <string name="export_summary_tax">Total tax</string>
     <string name="action_export">Export</string>
     <string name="action_logout">Logout</string>
+
+    <string name="detail_title">Edit receipt</string>
+    <string name="detail_date_label">Receipt date: %s</string>
+    <string name="detail_delete_title">Delete receipt?</string>
+    <string name="detail_delete_message">This receipt will be permanently deleted.</string>
+    <string name="action_save_changes">Save changes</string>
+    <string name="action_delete_confirm">Delete</string>
+    <string name="action_cancel">Cancel</string>
 </resources>

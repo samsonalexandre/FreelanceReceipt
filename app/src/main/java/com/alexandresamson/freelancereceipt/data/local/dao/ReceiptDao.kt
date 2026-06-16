@@ -14,9 +14,12 @@ interface ReceiptDao {
     suspend fun insertReceipt(receipt: ReceiptEntity): Long
 
     // Holt alle Belege sortiert nach dem neuesten Datum.
-    // Flow aktualisiert die UI automatisch, wenn sich die Datenbank ändert!
     @Query("SELECT * FROM receipts ORDER BY timestamp DESC")
     fun getAllReceipts(): Flow<List<ReceiptEntity>>
+
+    // Einzelnen Beleg per ID laden
+    @Query("SELECT * FROM receipts WHERE id = :receiptId")
+    suspend fun getReceiptById(receiptId: Long): ReceiptEntity?
 
     // Löscht einen Beleg anhand seiner ID
     @Query("DELETE FROM receipts WHERE id = :receiptId")
