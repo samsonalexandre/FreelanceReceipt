@@ -67,4 +67,16 @@
     <string name="action_save_changes">Guardar cambios</string>
     <string name="action_delete_confirm">Eliminar</string>
     <string name="action_cancel">Cancelar</string>
+
+    <string name="stats_title">Estadísticas</string>
+    <string name="stats_summary_title">Resumen</string>
+    <string name="stats_receipt_count">Total de recibos</string>
+    <string name="stats_total_brutto">Importe total (Bruto)</string>
+    <string name="stats_total_netto">Importe total (Neto)</string>
+    <string name="stats_total_tax">IVA total</string>
+    <string name="stats_by_category">Gastos por categoría</string>
+    <string name="stats_by_month">Evolución mensual</string>
+    <string name="stats_no_data">Aún no hay recibos disponibles</string>
+    <string name="action_stats">Estadísticas</string>
+    <string name="action_refresh">Actualizar</string>
 </resources>

@@ -67,4 +67,16 @@
     <string name="action_save_changes">Salva modifiche</string>
     <string name="action_delete_confirm">Elimina</string>
     <string name="action_cancel">Annulla</string>
+
+    <string name="stats_title">Statistiche</string>
+    <string name="stats_summary_title">Riepilogo</string>
+    <string name="stats_receipt_count">Totale ricevute</string>
+    <string name="stats_total_brutto">Importo totale (Lordo)</string>
+    <string name="stats_total_netto">Importo totale (Netto)</string>
+    <string name="stats_total_tax">IVA totale</string>
+    <string name="stats_by_category">Spese per categoria</string>
+    <string name="stats_by_month">Andamento mensile</string>
+    <string name="stats_no_data">Non ci sono ancora ricevute disponibili</string>
+    <string name="action_stats">Statistiche</string>
+    <string name="action_refresh">Aggiorna</string>
 </resources>

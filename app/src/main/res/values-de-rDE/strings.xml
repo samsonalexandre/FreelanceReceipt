@@ -67,4 +67,16 @@
     <string name="action_save_changes">Änderungen speichern</string>
     <string name="action_delete_confirm">Löschen</string>
     <string name="action_cancel">Abbrechen</string>
+
+    <string name="stats_title">Statistiken</string>
+    <string name="stats_summary_title">Zusammenfassung</string>
+    <string name="stats_receipt_count">Anzahl Belege</string>
+    <string name="stats_total_brutto">Gesamtbetrag (Brutto)</string>
+    <string name="stats_total_netto">Gesamtbetrag (Netto)</string>
+    <string name="stats_total_tax">MwSt. gesamt</string>
+    <string name="stats_by_category">Ausgaben nach Kategorie</string>
+    <string name="stats_by_month">Monatliche Entwicklung</string>
+    <string name="stats_no_data">Noch keine Belege vorhanden</string>
+    <string name="action_stats">Statistiken</string>
+    <string name="action_refresh">Aktualisieren</string>
 </resources>

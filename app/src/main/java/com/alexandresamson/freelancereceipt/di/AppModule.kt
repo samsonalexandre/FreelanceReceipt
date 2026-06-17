@@ -14,6 +14,7 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import com.alexandresamson.freelancereceipt.ui.stats.StatsViewModel
 
 val appModule = module {
 
@@ -42,4 +43,5 @@ val appModule = module {
     viewModel { AddReceiptViewModel(get(), get()) }
     viewModel { ExportViewModel(get(), get()) }
     viewModel { DetailReceiptViewModel(get()) }
+    viewModel { StatsViewModel(get()) }
 }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material.icons.filled.Logout
@@ -32,7 +33,8 @@ fun DashboardScreen(
     onAddClick: () -> Unit = {},
     onExportClick: () -> Unit,
     onLogout: () -> Unit = {},
-    onItemClick: (Long) -> Unit = {}
+    onItemClick: (Long) -> Unit = {},
+    onStatsClick: () -> Unit = {}
 ) {
     val receipts by viewModel.receipts.collectAsStateWithLifecycle()
 
@@ -42,7 +44,8 @@ fun DashboardScreen(
         onExportClick = onExportClick,
         onLogout      = onLogout,
         onDeleteClick = { viewModel.deleteReceipt(it) },
-        onItemClick   = onItemClick
+        onItemClick   = onItemClick,
+        onStatsClick = onStatsClick
     )
 }
 
@@ -54,13 +57,20 @@ private fun DashboardContent(
     onExportClick: () -> Unit,
     onLogout: () -> Unit,
     onDeleteClick: (Long) -> Unit,
-    onItemClick: (Long) -> Unit
+    onItemClick: (Long) -> Unit,
+    onStatsClick: () -> Unit
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.app_name)) },
                 actions = {
+                    IconButton(onClick = onStatsClick) {
+                        Icon(
+                            imageVector = Icons.Default.BarChart, // Falls rot unterstrichen, Alt+Enter für den Import nutzen
+                            contentDescription = stringResource(R.string.action_stats)
+                        )
+                    }
                     IconButton(onClick = onExportClick) {
                         Icon(
                             imageVector = Icons.Default.FileDownload,
@@ -226,7 +236,8 @@ private fun DashboardEmptyPreviewDe() {
             onExportClick = {},
             onLogout      = {},
             onDeleteClick = {},
-            onItemClick   = {}   // ← war vergessen
+            onItemClick   = {},
+            onStatsClick = {}
         )
     }
 }
@@ -258,7 +269,8 @@ private fun DashboardWithDataPreviewDe() {
             onExportClick = {},
             onLogout      = {},
             onDeleteClick = {},
-            onItemClick   = {}   // ← war vergessen
+            onItemClick   = {},
+            onStatsClick = {}
         )
     }
 }

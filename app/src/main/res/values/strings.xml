@@ -68,4 +68,16 @@
     <string name="action_save_changes">Save changes</string>
     <string name="action_delete_confirm">Delete</string>
     <string name="action_cancel">Cancel</string>
+
+    <string name="stats_title">Statistics</string>
+    <string name="stats_summary_title">Summary</string>
+    <string name="stats_receipt_count">Total Receipts</string>
+    <string name="stats_total_brutto">Total Amount (Gross)</string>
+    <string name="stats_total_netto">Total Amount (Net)</string>
+    <string name="stats_total_tax">Total Tax</string>
+    <string name="stats_by_category">Expenses by Category</string>
+    <string name="stats_by_month">Monthly Development</string>
+    <string name="stats_no_data">No receipts available yet</string>
+    <string name="action_stats">Statistics</string>
+    <string name="action_refresh">Refresh</string>
 </resources>

@@ -67,4 +67,16 @@
     <string name="action_save_changes">Enregistrer les modifications</string>
     <string name="action_delete_confirm">Supprimer</string>
     <string name="action_cancel">Annuler</string>
+
+    <string name="stats_title">Statistiques</string>
+    <string name="stats_summary_title">Résumé</string>
+    <string name="stats_receipt_count">Nombre de reçus</string>
+    <string name="stats_total_brutto">Montant total (Brut)</string>
+    <string name="stats_total_netto">Montant total (Net)</string>
+    <string name="stats_total_tax">TVA totale</string>
+    <string name="stats_by_category">Dépenses por catégorie</string>
+    <string name="stats_by_month">Évolution mensuelle</string>
+    <string name="stats_no_data">Aucun reçu disponible pour le moment</string>
+    <string name="action_stats">Statistiques</string>
+    <string name="action_refresh">Actualiser</string>
 </resources>

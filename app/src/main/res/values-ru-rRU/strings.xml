@@ -67,4 +67,16 @@
     <string name="action_save_changes">Сохранить изменения</string>
     <string name="action_delete_confirm">Удалить</string>
     <string name="action_cancel">Отмена</string>
+
+    <string name="stats_title">Статистика</string>
+    <string name="stats_summary_title">Сводка</string>
+    <string name="stats_receipt_count">Всего чеков</string>
+    <string name="stats_total_brutto">Общая сумма (брутто)</string>
+    <string name="stats_total_netto">Общая сумма (нетто)</string>
+    <string name="stats_total_tax">Итого НДС</string>
+    <string name="stats_by_category">Расходы по категориям</string>
+    <string name="stats_by_month">Ежемесячная динамика</string>
+    <string name="stats_no_data">Чеки пока отсутствуют</string>
+    <string name="action_stats">Статистика</string>
+    <string name="action_refresh">Обновить</string>
 </resources>

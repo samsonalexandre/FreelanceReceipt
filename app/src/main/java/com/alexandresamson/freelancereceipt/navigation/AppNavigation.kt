@@ -17,6 +17,7 @@ import com.alexandresamson.freelancereceipt.ui.addreceipt.AddReceiptScreen
 import com.alexandresamson.freelancereceipt.ui.dashboard.DashboardScreen
 import com.alexandresamson.freelancereceipt.ui.detail.DetailReceiptScreen
 import com.alexandresamson.freelancereceipt.ui.export.ExportScreen
+import com.alexandresamson.freelancereceipt.ui.stats.StatsScreen
 import org.koin.androidx.compose.koinViewModel
 
 sealed class Screen(val route: String) {
@@ -31,6 +32,7 @@ sealed class Screen(val route: String) {
     data object Detail : Screen("detail/{receiptId}") {
         fun createRoute(id: Long) = "detail/$id"
     }
+    data object Stats       : Screen("stats")
 }
 
 // Einfacher In-Memory-Speicher für den OCR-Text
@@ -104,6 +106,7 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
             DashboardScreen(
                 onAddClick    = { navController.navigate(Screen.Camera.route) },
                 onExportClick = { navController.navigate(Screen.Export.route) },
+                onStatsClick  = { navController.navigate(Screen.Stats.route) },
                 onItemClick   = { id -> navController.navigate(Screen.Detail.createRoute(id)) },
                 onLogout      = {
                     authViewModel.signOut()
@@ -144,6 +147,12 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
 
         composable(Screen.Export.route) {
             ExportScreen(onBack = { navController.popBackStack() })
+        }
+
+        composable(Screen.Stats.route) {
+            StatsScreen(
+                onBack = { navController.popBackStack() }
+            )
         }
     }
 }
