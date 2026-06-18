@@ -18,7 +18,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexandresamson.freelancereceipt.R
-import com.alexandresamson.freelancereceipt.ui.addreceipt.CATEGORIES
+import com.alexandresamson.freelancereceipt.ui.addreceipt.CategoryDropdown
 import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -34,12 +34,10 @@ fun DetailReceiptScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    // Beleg einmalig beim Öffnen laden
     LaunchedEffect(receiptId) {
         viewModel.loadReceipt(receiptId)
     }
 
-    // Nach Speichern oder Löschen zurück
     LaunchedEffect(uiState.isSaved) {
         if (uiState.isSaved) onBack()
     }
@@ -47,7 +45,6 @@ fun DetailReceiptScreen(
         if (uiState.isDeleted) onDeleted()
     }
 
-    // Löschen-Bestätigung
     var showDeleteDialog by remember { mutableStateOf(false) }
     if (showDeleteDialog) {
         AlertDialog(
@@ -117,10 +114,11 @@ fun DetailReceiptScreen(
         ) {
             Spacer(Modifier.height(4.dp))
 
-            // Datum — read-only, wird nicht verändert
             if (uiState.timestampMs > 0L) {
-                val dateStr = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
-                    .format(Date(uiState.timestampMs))
+                val dateStr = remember(uiState.timestampMs) {
+                    SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+                        .format(Date(uiState.timestampMs))
+                }
                 Text(
                     text = stringResource(R.string.detail_date_label, dateStr),
                     style = MaterialTheme.typography.bodySmall,
@@ -161,9 +159,8 @@ fun DetailReceiptScreen(
                 taxRate    = uiState.taxRate
             )
 
-            // Kategorie-Dropdown — gleiche Komponente wie AddReceiptScreen
-            DetailCategoryDropdown(
-                selected   = uiState.category,
+            CategoryDropdown(
+                selectedDbKey = uiState.categoryDbKey,
                 onSelected = viewModel::onCategoryChange
             )
 
@@ -188,36 +185,6 @@ fun DetailReceiptScreen(
             }
 
             Spacer(Modifier.height(16.dp))
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun DetailCategoryDropdown(selected: String, onSelected: (String) -> Unit) {
-    var expanded by remember { mutableStateOf(false) }
-    ExposedDropdownMenuBox(
-        expanded        = expanded,
-        onExpandedChange = { expanded = it }
-    ) {
-        OutlinedTextField(
-            value        = selected,
-            onValueChange = {},
-            readOnly     = true,
-            label        = { Text(stringResource(R.string.label_category)) },
-            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
-            modifier     = Modifier.menuAnchor().fillMaxWidth()
-        )
-        ExposedDropdownMenu(
-            expanded        = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
-            CATEGORIES.forEach { category ->
-                DropdownMenuItem(
-                    text    = { Text(category) },
-                    onClick = { onSelected(category); expanded = false }
-                )
-            }
         }
     }
 }

@@ -4,14 +4,17 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.alexandresamson.freelancereceipt.data.local.entity.ReceiptEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ReceiptDao {
-    // Speichert einen neuen Beleg. Bei gleicher ID wird überschrieben.
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertReceipt(receipt: ReceiptEntity): Long
+
+    @Update
+    suspend fun updateReceipt(receipt: ReceiptEntity)
 
     // Holt alle Belege sortiert nach dem neuesten Datum.
     @Query("SELECT * FROM receipts ORDER BY timestamp DESC")

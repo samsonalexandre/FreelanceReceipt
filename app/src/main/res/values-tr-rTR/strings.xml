@@ -1,0 +1,169 @@
+<resources>
+    <string name="app_name">FreelanceReceipt</string>
+
+    <!-- Dashboard Screen -->
+    <string name="fab_scan_content_desc">Yeni fiş tara</string>
+    <string name="dashboard_empty_title">Fiş bulunamadı</string>
+    <string name="dashboard_empty_subtitle">İlk fişini taramak için + simgesine dokun.</string>
+    <string name="receipt_tax_rate">KDV %.1f%%</string>
+    <string name="receipt_delete_content_desc">Fişi sil</string>
+
+    <!-- Auth -->
+    <string name="login_title">Giriş yap</string>
+    <string name="register_title">Hesap oluştur</string>
+    <string name="label_email">E-posta</string>
+    <string name="label_password">Şifre</string>
+    <string name="label_password_confirm">Şifre tekrar</string>
+    <string name="action_login">Giriş yap</string>
+    <string name="action_register">Kayıt ol</string>
+    <string name="action_google_signin">Google ile giriş yap</string>
+    <string name="action_go_to_register">Hesabın yok mu? Kayıt ol</string>
+    <string name="action_go_to_login">Zaten kayıtlı mısın? Giriş yap</string>
+    <string name="action_show">Göster</string>
+    <string name="action_hide">Gizle</string>
+    <string name="error_passwords_no_match">Şifreler eşleşmiyor</string>
+
+    <!-- Biometric -->
+    <string name="biometric_title">Uygulama kilitli</string>
+    <string name="biometric_subtitle">Parmak izi veya yüz ile kilidi açın</string>
+    <string name="biometric_prompt_title">FreelanceReceipt kilidini aç</string>
+    <string name="biometric_prompt_subtitle">Kimliğinizi doğrulayın</string>
+    <string name="biometric_retry">Tekrar dene</string>
+
+    <string name="camera_hint">Fişi çerçeveye yerleştirin ve fotoğraf çekin</string>
+    <string name="camera_capture_desc">Fotoğraf çek</string>
+    <string name="camera_permission_rationale">Fişleri taramak için kamera gereklidir.</string>
+    <string name="camera_permission_denied">Kamera erişimi reddedildi. Lütfen ayarlardan etkinleştirin.</string>
+    <string name="action_grant_permission">İzin ver</string>
+    <string name="action_back">Geri</string>
+
+    <string name="add_receipt_title">Fişi kontrol et</string>
+    <string name="label_merchant">Satıcı</string>
+    <string name="label_amount">Tutar</string>
+    <string name="label_tax_rate">KDV oranı</string>
+    <string name="label_category">Kategori</string>
+    <string name="action_save_receipt">Fişi kaydet</string>
+
+    <!-- Export -->
+    <string name="export_title">Dışa aktar</string>
+    <string name="export_format_label">Format seçin</string>
+    <string name="export_csv_title">CSV olarak dışa aktar</string>
+    <string name="export_csv_subtitle">Excel, Numbers veya Google Sheets\'te açılır</string>
+    <string name="export_pdf_title">PDF olarak dışa aktar</string>
+    <string name="export_pdf_subtitle">Göndermek için profesyonel fiş listesi</string>
+    <string name="export_no_receipts">Dışa aktarılacak fiş yok</string>
+    <string name="export_summary_title">Özet</string>
+    <string name="export_summary_count">Fiş sayısı</string>
+    <string name="export_summary_brutto">Toplam tutar (Brüt)</string>
+    <string name="export_summary_netto">Net</string>
+    <string name="export_summary_tax">Toplam KDV</string>
+    <string name="action_export">Dışa aktar</string>
+    <string name="action_logout">Çıkış yap</string>
+
+    <string name="detail_title">Fişi düzenle</string>
+    <string name="detail_date_label">Fiş tarihi: %s</string>
+    <string name="detail_delete_title">Fiş silinsin mi?</string>
+    <string name="detail_delete_message">Bu fiş kalıcı olarak silinecektir.</string>
+    <string name="action_save_changes">Değişiklikleri kaydet</string>
+    <string name="action_delete_confirm">Sil</string>
+    <string name="action_cancel">İptal</string>
+
+    <string name="stats_title">İstatistikler</string>
+    <string name="stats_summary_title">Özet</string>
+    <string name="stats_receipt_count">Toplam fiş</string>
+    <string name="stats_total_brutto">Toplam tutar (Brüt)</string>
+    <string name="stats_total_netto">Toplam tutar (Net)</string>
+    <string name="stats_total_tax">Toplam KDV</string>
+    <string name="stats_by_category">Kategoriye göre harcamalar</string>
+    <string name="stats_by_month">Aylık gelişim</string>
+    <string name="stats_no_data">Henüz fiş bulunmuyor</string>
+    <string name="action_stats">İstatistikler</string>
+    <string name="action_refresh">Yenile</string>
+
+    <!-- Tax Breakdown Card -->
+    <string name="tax_label_netto">Net</string>
+    <string name="tax_label_mwst">KDV (%s%%)</string>
+    <string name="tax_label_brutto">Brüt (toplam)</string>
+
+    <!-- Error messages -->
+    <string name="error_invalid_amount">Geçersiz tutar</string>
+    <string name="error_receipt_not_found">Fiş bulunamadı</string>
+
+    <!-- Categories -->
+    <string name="category_groceries">Market</string>
+    <string name="category_travel">Yol masrafları</string>
+    <string name="category_office">Ofis</string>
+    <string name="category_restaurant">Restoran</string>
+    <string name="category_software">Yazılım</string>
+    <string name="category_other">Diğer</string>
+
+    <!-- Export document strings -->
+    <string name="export_doc_title">FreelanceReceipt — Fiş listesi</string>
+    <string name="export_doc_exported_on">%s tarihinde dışa aktarıldı</string>
+    <string name="export_doc_receipt_count">%d fiş</string>
+    <string name="export_doc_header_date">Tarih</string>
+    <string name="export_doc_header_merchant">Satıcı</string>
+    <string name="export_doc_header_amount">Tutar</string>
+    <string name="export_doc_header_tax">KDV</string>
+    <string name="export_doc_header_category">Kategori</string>
+    <string name="export_doc_total_gross">Toplam (Brüt)</string>
+    <string name="export_doc_net">Net: %s</string>
+    <string name="export_doc_tax">KDV: %s</string>
+    <string name="export_doc_total">Toplam</string>
+    <string name="export_doc_footer">FreelanceReceipt ile oluşturuldu • Sayfa %d</string>
+    <string name="export_csv_header">Tarih;Satıcı;Tutar (€);KDV (%%);Kategori</string>
+
+    <!-- Dashboard delete confirmation -->
+    <string name="dashboard_delete_title">Fiş silinsin mi?</string>
+    <string name="dashboard_delete_message">\"%s\" kalıcı olarak silinecektir.</string>
+
+    <!-- Welcome -->
+    <string name="welcome_tagline">Tara, düzenle, dışa aktar — fişler artık kolay.</string>
+    <string name="welcome_feature_scan">Fişleri saniyeler içinde tara</string>
+    <string name="welcome_feature_organize">Kategoriye göre otomatik sıralama</string>
+    <string name="welcome_feature_export">CSV ve PDF dışa aktarma</string>
+    <string name="welcome_get_started">Başla</string>
+
+    <!-- Dashboard banner -->
+    <string name="dashboard_scans_left">Bu ay %2$d taramadan %1$d tanesi kaldı</string>
+    <string name="dashboard_limit_reached_title">Aylık limit doldu</string>
+    <string name="dashboard_upgrade_hint">Sınırsız tarama için dokun</string>
+    <string name="action_settings">Ayarlar</string>
+
+    <!-- Limit reached -->
+    <string name="limit_reached_title">Ücretsiz limit doldu</string>
+    <string name="limit_reached_body">Bu ay %2$d ücretsiz taramadan %1$d tanesini kullandın. Sınırsız tarama için Premium\'a geç.</string>
+    <string name="limit_reached_cta">Premium\'a geç</string>
+
+    <!-- Paywall -->
+    <string name="paywall_title">Premium</string>
+    <string name="paywall_headline">Premium\'u Aç</string>
+    <string name="paywall_subhead">Tek seferlik ödeme. Sonsuza dek senin.</string>
+    <string name="paywall_feature_unlimited">Ayda sınırsız tarama</string>
+    <string name="paywall_feature_no_ads">Reklam yok, asla</string>
+    <string name="paywall_feature_export">Sınırsız PDF ve CSV dışa aktarma</string>
+    <string name="paywall_feature_priority">Öncelikli e-posta desteği</string>
+    <string name="paywall_feature_lifetime">Ömür boyu erişim — abonelik yok</string>
+    <string name="paywall_one_time_label">Tek seferlik ödeme</string>
+    <string name="paywall_price_fallback">6,99 €</string>
+    <string name="paywall_no_subscription">Abonelik yok · Tekrarlayan ücret yok</string>
+    <string name="paywall_cta_purchase">Premium Satın Al</string>
+    <string name="paywall_restore">Önceki satın almayı geri yükle</string>
+    <string name="paywall_legal">Satın alarak Şartlar ve Gizlilik Politikamızı kabul edersin. Ödeme Google Play hesabından alınır.</string>
+    <string name="paywall_error_title">Satın alma sorunu</string>
+    <string name="action_ok">Tamam</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Ayarlar</string>
+    <string name="settings_status_premium">Premium</string>
+    <string name="settings_status_free">Ücretsiz plan</string>
+    <string name="settings_premium_desc">Tüm özelliklere sınırsız erişimin var. FreelanceReceipt\'i desteklediğin için teşekkürler!</string>
+    <string name="settings_free_desc">Bu ay %2$d ücretsiz taramadan %1$d tanesini kullandın.</string>
+    <string name="settings_upgrade">Premium\'a geç</string>
+    <string name="settings_restore_purchases">Satın almaları geri yükle</string>
+    <string name="settings_restore_purchases_desc">Başka bir cihazda Premium aldın mı?</string>
+    <string name="settings_privacy">Gizlilik Politikası</string>
+    <string name="settings_terms">Kullanım Şartları</string>
+    <string name="settings_contact">Desteğe ulaş</string>
+    <string name="settings_version">Sürüm %s</string>
+</resources>

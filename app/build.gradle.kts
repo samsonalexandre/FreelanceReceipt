@@ -18,11 +18,17 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // BuildConfig URLs — change in one place when domain is final
+        buildConfigField("String", "PRIVACY_POLICY_URL", "\"https://freelancereceipt.app/privacy\"")
+        buildConfigField("String", "TERMS_URL",          "\"https://freelancereceipt.app/terms\"")
+        buildConfigField("String", "SUPPORT_EMAIL",      "\"support@freelancereceipt.app\"")
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -37,6 +43,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     // Fix für die 16-KB-Warnung
@@ -70,6 +77,15 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation("androidx.compose.material:material-icons-extended")
     // Version kommt vom BOM — kein hardcoded "1.6.8" nötig
+
+    // ── Splash Screen ────────────────────────────────────────────────────────
+    implementation("androidx.core:core-splashscreen:1.0.1")
+
+    // ── Google Play Billing ──────────────────────────────────────────────────
+    implementation("com.android.billingclient:billing-ktx:7.1.1")
+
+    // ── DataStore (Preferences) ──────────────────────────────────────────────
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
 
     // ── Core & Lifecycle ─────────────────────────────────────────────────────
     implementation(libs.androidx.core.ktx)

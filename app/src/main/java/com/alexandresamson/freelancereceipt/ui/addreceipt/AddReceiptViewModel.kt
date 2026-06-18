@@ -1,12 +1,15 @@
 package com.alexandresamson.freelancereceipt.ui.addreceipt
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.alexandresamson.freelancereceipt.R
 import com.alexandresamson.freelancereceipt.data.local.entity.ReceiptEntity
+import com.alexandresamson.freelancereceipt.data.prefs.PreferencesManager
 import com.alexandresamson.freelancereceipt.data.repository.ReceiptRepository
+import com.alexandresamson.freelancereceipt.domain.Category
 import com.alexandresamson.freelancereceipt.domain.ParsedReceipt
 import com.alexandresamson.freelancereceipt.domain.ReceiptParser
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,28 +18,23 @@ import kotlinx.coroutines.launch
 
 data class AddReceiptUiState(
     val merchant: String        = "",
-    val amountEuro: String      = "",   // Anzeige in Euro, z.B. "12,99"
+    val amountEuro: String      = "",
     val taxRate: String         = "19",
-    val category: String        = "Sonstiges",
+    val categoryDbKey: String   = Category.OTHER.dbKey,
     val isSaving: Boolean       = false,
     val isSaved: Boolean        = false,
     val error: String?          = null
 )
 
-val CATEGORIES = listOf(
-    "Lebensmittel", "Fahrtkosten", "Büro",
-    "Restaurant", "Software", "Sonstiges"
-)
-
 class AddReceiptViewModel(
     private val repository: ReceiptRepository,
-    private val auth: FirebaseAuth
-) : ViewModel() {
+    private val prefs: PreferencesManager,
+    application: Application
+) : AndroidViewModel(application) {
 
     private val _uiState = MutableStateFlow(AddReceiptUiState())
     val uiState: StateFlow<AddReceiptUiState> = _uiState.asStateFlow()
 
-    // Wird vom CameraScreen aufgerufen — parsed den rohen OCR-Text
     fun onRawTextReceived(rawText: String) {
         val parsed = ReceiptParser.parse(rawText)
         applyParsedReceipt(parsed)
@@ -45,18 +43,18 @@ class AddReceiptViewModel(
     private fun applyParsedReceipt(parsed: ParsedReceipt) {
         _uiState.update {
             it.copy(
-                merchant   = parsed.merchant,
-                amountEuro = "%.2f".format(parsed.amountInCents / 100.0).replace(".", ","),
-                taxRate    = parsed.taxRate.toInt().toString(),
-                category   = parsed.category
+                merchant      = parsed.merchant,
+                amountEuro    = "%.2f".format(parsed.amountInCents / 100.0).replace(".", ","),
+                taxRate       = parsed.taxRate.toInt().toString(),
+                categoryDbKey = parsed.category
             )
         }
     }
 
-    fun onMerchantChange(value: String)  = _uiState.update { it.copy(merchant = value) }
-    fun onAmountChange(value: String)    = _uiState.update { it.copy(amountEuro = value) }
-    fun onTaxRateChange(value: String)   = _uiState.update { it.copy(taxRate = value) }
-    fun onCategoryChange(value: String)  = _uiState.update { it.copy(category = value) }
+    fun onMerchantChange(value: String)     = _uiState.update { it.copy(merchant = value) }
+    fun onAmountChange(value: String)       = _uiState.update { it.copy(amountEuro = value) }
+    fun onTaxRateChange(value: String)      = _uiState.update { it.copy(taxRate = value) }
+    fun onCategoryChange(dbKey: String)     = _uiState.update { it.copy(categoryDbKey = dbKey) }
 
     fun saveReceipt(timestampMs: Long) {
         val state = _uiState.value
@@ -65,7 +63,9 @@ class AddReceiptViewModel(
             .toDoubleOrNull()
             ?.let { (it * 100).toLong() }
             ?: run {
-                _uiState.update { it.copy(error = "Ungültiger Betrag") }
+                _uiState.update {
+                    it.copy(error = getApplication<Application>().getString(R.string.error_invalid_amount))
+                }
                 return
             }
 
@@ -78,11 +78,12 @@ class AddReceiptViewModel(
                         merchant       = state.merchant.ifBlank { "Unbekannt" },
                         amountInCents  = amountCents,
                         taxRate        = state.taxRate.toDoubleOrNull() ?: 19.0,
-                        category       = state.category,
-                        // Firebase UID anhängen — jeder Nutzer sieht nur seine Belege
-                        isPremiumFeature = auth.currentUser != null
+                        category       = state.categoryDbKey
                     )
                 )
+                // Count this as a successful scan toward the free-tier monthly cap.
+                // Premium users still get incremented; the limit only applies if !isPremium.
+                prefs.incrementScanCount()
                 _uiState.update { it.copy(isSaved = true) }
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.localizedMessage) }

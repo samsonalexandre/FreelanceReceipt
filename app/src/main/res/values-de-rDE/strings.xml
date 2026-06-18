@@ -79,4 +79,91 @@
     <string name="stats_no_data">Noch keine Belege vorhanden</string>
     <string name="action_stats">Statistiken</string>
     <string name="action_refresh">Aktualisieren</string>
+
+    <!-- Tax Breakdown Card -->
+    <string name="tax_label_netto">Netto</string>
+    <string name="tax_label_mwst">MwSt. (%s%%)</string>
+    <string name="tax_label_brutto">Brutto (gesamt)</string>
+
+    <!-- Error messages -->
+    <string name="error_invalid_amount">Ungültiger Betrag</string>
+    <string name="error_receipt_not_found">Beleg nicht gefunden</string>
+
+    <!-- Categories -->
+    <string name="category_groceries">Lebensmittel</string>
+    <string name="category_travel">Fahrtkosten</string>
+    <string name="category_office">Büro</string>
+    <string name="category_restaurant">Restaurant</string>
+    <string name="category_software">Software</string>
+    <string name="category_other">Sonstiges</string>
+
+    <!-- Export document strings -->
+    <string name="export_doc_title">FreelanceReceipt — Belegliste</string>
+    <string name="export_doc_exported_on">Exportiert am %s</string>
+    <string name="export_doc_receipt_count">%d Belege</string>
+    <string name="export_doc_header_date">Datum</string>
+    <string name="export_doc_header_merchant">Händler</string>
+    <string name="export_doc_header_amount">Betrag</string>
+    <string name="export_doc_header_tax">MwSt.</string>
+    <string name="export_doc_header_category">Kategorie</string>
+    <string name="export_doc_total_gross">Gesamt (Brutto)</string>
+    <string name="export_doc_net">Netto: %s</string>
+    <string name="export_doc_tax">MwSt.: %s</string>
+    <string name="export_doc_total">Gesamt</string>
+    <string name="export_doc_footer">Erstellt mit FreelanceReceipt • Seite %d</string>
+    <string name="export_csv_header">Datum;Händler;Betrag (€);MwSt. (%%);Kategorie</string>
+
+    <!-- Dashboard delete confirmation -->
+    <string name="dashboard_delete_title">Beleg löschen?</string>
+    <string name="dashboard_delete_message">\"%s\" wird unwiderruflich gelöscht.</string>
+
+    <!-- Welcome screen -->
+    <string name="welcome_tagline">Scannen, sortieren, exportieren — Belege einfach gemacht.</string>
+    <string name="welcome_feature_scan">Belege in Sekunden scannen</string>
+    <string name="welcome_feature_organize">Automatisch nach Kategorie sortieren</string>
+    <string name="welcome_feature_export">CSV- &amp; PDF-Export</string>
+    <string name="welcome_get_started">Loslegen</string>
+
+    <!-- Dashboard: free/premium banner -->
+    <string name="dashboard_scans_left">Noch %1$d von %2$d Scans diesen Monat</string>
+    <string name="dashboard_limit_reached_title">Monatslimit erreicht</string>
+    <string name="dashboard_upgrade_hint">Tippen für unbegrenzte Scans</string>
+    <string name="action_settings">Einstellungen</string>
+
+    <!-- Free-tier limit -->
+    <string name="limit_reached_title">Gratis-Limit erreicht</string>
+    <string name="limit_reached_body">Du hast %1$d von %2$d gratis Scans diesen Monat verbraucht. Hol dir Premium für unbegrenzte Scans.</string>
+    <string name="limit_reached_cta">Premium freischalten</string>
+
+    <!-- Paywall -->
+    <string name="paywall_title">Premium</string>
+    <string name="paywall_headline">Premium freischalten</string>
+    <string name="paywall_subhead">Einmalzahlung. Für immer dein.</string>
+    <string name="paywall_feature_unlimited">Unbegrenzte Scans pro Monat</string>
+    <string name="paywall_feature_no_ads">Keine Werbung, niemals</string>
+    <string name="paywall_feature_export">Unbegrenzter PDF- &amp; CSV-Export</string>
+    <string name="paywall_feature_priority">Bevorzugter E-Mail-Support</string>
+    <string name="paywall_feature_lifetime">Lebenslanger Zugriff — kein Abo</string>
+    <string name="paywall_one_time_label">Einmalzahlung</string>
+    <string name="paywall_price_fallback">6,99 €</string>
+    <string name="paywall_no_subscription">Kein Abo · Keine wiederkehrenden Kosten</string>
+    <string name="paywall_cta_purchase">Premium kaufen</string>
+    <string name="paywall_restore">Früheren Kauf wiederherstellen</string>
+    <string name="paywall_legal">Mit dem Kauf akzeptierst du unsere AGB und Datenschutzerklärung. Die Zahlung wird über dein Google Play-Konto abgewickelt.</string>
+    <string name="paywall_error_title">Problem beim Kauf</string>
+    <string name="action_ok">OK</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Einstellungen</string>
+    <string name="settings_status_premium">Premium</string>
+    <string name="settings_status_free">Kostenloser Tarif</string>
+    <string name="settings_premium_desc">Du hast unbegrenzten Zugriff auf alle Funktionen. Danke, dass du FreelanceReceipt unterstützt!</string>
+    <string name="settings_free_desc">Du hast %1$d von %2$d gratis Scans diesen Monat verbraucht.</string>
+    <string name="settings_upgrade">Premium freischalten</string>
+    <string name="settings_restore_purchases">Käufe wiederherstellen</string>
+    <string name="settings_restore_purchases_desc">Schon Premium auf einem anderen Gerät gekauft?</string>
+    <string name="settings_privacy">Datenschutzerklärung</string>
+    <string name="settings_terms">Nutzungsbedingungen</string>
+    <string name="settings_contact">Support kontaktieren</string>
+    <string name="settings_version">Version %s</string>
 </resources>

@@ -9,8 +9,7 @@ data class ReceiptEntity(
     val id: Long = 0,
     val timestamp: Long,
     val merchant: String,
-    val amountInCents: Long, // Cent-Beträge, um Rundungsfehler zu vermeiden
+    val amountInCents: Long,
     val taxRate: Double,
-    val category: String,
-    val isPremiumFeature: Boolean = false
+    val category: String
 )

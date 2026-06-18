@@ -9,12 +9,13 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexandresamson.freelancereceipt.R
+import com.alexandresamson.freelancereceipt.domain.Category
 import com.alexandresamson.freelancereceipt.ui.common.TaxBreakdownCard
 import org.koin.androidx.compose.koinViewModel
 
@@ -89,14 +90,13 @@ fun AddReceiptScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            // MwSt-Aufschlüsselung
             TaxBreakdownCard(
                 amountEuro = uiState.amountEuro,
                 taxRate = uiState.taxRate
             )
 
             CategoryDropdown(
-                selected = uiState.category,
+                selectedDbKey = uiState.categoryDbKey,
                 onSelected = viewModel::onCategoryChange
             )
 
@@ -129,14 +129,17 @@ fun AddReceiptScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun CategoryDropdown(selected: String, onSelected: (String) -> Unit) {
+fun CategoryDropdown(selectedDbKey: String, onSelected: (String) -> Unit) {
+    val context = LocalContext.current
     var expanded by remember { mutableStateOf(false) }
+    val displayName = Category.dbKeyToDisplayName(context, selectedDbKey)
+
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { expanded = it }
     ) {
         OutlinedTextField(
-            value = selected,
+            value = displayName,
             onValueChange = {},
             readOnly = true,
             label = { Text(stringResource(R.string.label_category)) },
@@ -147,10 +150,13 @@ private fun CategoryDropdown(selected: String, onSelected: (String) -> Unit) {
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            CATEGORIES.forEach { category ->
+            Category.entries.forEach { category ->
                 DropdownMenuItem(
-                    text = { Text(category) },
-                    onClick = { onSelected(category); expanded = false }
+                    text = { Text(category.displayName(context)) },
+                    onClick = {
+                        onSelected(category.dbKey)
+                        expanded = false
+                    }
                 )
             }
         }

@@ -80,4 +80,91 @@
     <string name="stats_no_data">No receipts available yet</string>
     <string name="action_stats">Statistics</string>
     <string name="action_refresh">Refresh</string>
+
+    <!-- Tax Breakdown Card -->
+    <string name="tax_label_netto">Net</string>
+    <string name="tax_label_mwst">VAT (%s%%)</string>
+    <string name="tax_label_brutto">Gross (total)</string>
+
+    <!-- Error messages (used in ViewModels via string resource IDs) -->
+    <string name="error_invalid_amount">Invalid amount</string>
+    <string name="error_receipt_not_found">Receipt not found</string>
+
+    <!-- Categories (display names — DB keys are English constants) -->
+    <string name="category_groceries">Groceries</string>
+    <string name="category_travel">Travel expenses</string>
+    <string name="category_office">Office</string>
+    <string name="category_restaurant">Restaurant</string>
+    <string name="category_software">Software</string>
+    <string name="category_other">Other</string>
+
+    <!-- Export document strings -->
+    <string name="export_doc_title">FreelanceReceipt — Receipt list</string>
+    <string name="export_doc_exported_on">Exported on %s</string>
+    <string name="export_doc_receipt_count">%d receipts</string>
+    <string name="export_doc_header_date">Date</string>
+    <string name="export_doc_header_merchant">Merchant</string>
+    <string name="export_doc_header_amount">Amount</string>
+    <string name="export_doc_header_tax">VAT</string>
+    <string name="export_doc_header_category">Category</string>
+    <string name="export_doc_total_gross">Total (Gross)</string>
+    <string name="export_doc_net">Net: %s</string>
+    <string name="export_doc_tax">VAT: %s</string>
+    <string name="export_doc_total">Total</string>
+    <string name="export_doc_footer">Created with FreelanceReceipt • Page %d</string>
+    <string name="export_csv_header">Date;Merchant;Amount (€);VAT (%%);Category</string>
+
+    <!-- Dashboard delete confirmation -->
+    <string name="dashboard_delete_title">Delete receipt?</string>
+    <string name="dashboard_delete_message">"%s" will be permanently deleted.</string>
+
+    <!-- Welcome screen -->
+    <string name="welcome_tagline">Scan, sort, export — receipts made simple.</string>
+    <string name="welcome_feature_scan">Scan receipts in seconds</string>
+    <string name="welcome_feature_organize">Auto-sort by category</string>
+    <string name="welcome_feature_export">CSV &amp; PDF export</string>
+    <string name="welcome_get_started">Get started</string>
+
+    <!-- Dashboard: free/premium banner -->
+    <string name="dashboard_scans_left">%1$d of %2$d scans left this month</string>
+    <string name="dashboard_limit_reached_title">Monthly limit reached</string>
+    <string name="dashboard_upgrade_hint">Tap to unlock unlimited scans</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Free-tier limit / camera block -->
+    <string name="limit_reached_title">Free limit reached</string>
+    <string name="limit_reached_body">You\'ve used %1$d of %2$d free scans this month. Upgrade to Premium for unlimited scans.</string>
+    <string name="limit_reached_cta">Upgrade to Premium</string>
+
+    <!-- Paywall -->
+    <string name="paywall_title">Premium</string>
+    <string name="paywall_headline">Unlock Premium</string>
+    <string name="paywall_subhead">One-time payment. Yours forever.</string>
+    <string name="paywall_feature_unlimited">Unlimited scans per month</string>
+    <string name="paywall_feature_no_ads">No ads, ever</string>
+    <string name="paywall_feature_export">Unlimited PDF &amp; CSV exports</string>
+    <string name="paywall_feature_priority">Priority email support</string>
+    <string name="paywall_feature_lifetime">Lifetime access — no subscription</string>
+    <string name="paywall_one_time_label">One-time payment</string>
+    <string name="paywall_price_fallback">€6.99</string>
+    <string name="paywall_no_subscription">No subscription · No recurring charges</string>
+    <string name="paywall_cta_purchase">Buy Premium</string>
+    <string name="paywall_restore">Restore previous purchase</string>
+    <string name="paywall_legal">By purchasing you agree to our Terms of Service and Privacy Policy. Payment is charged to your Google Play account.</string>
+    <string name="paywall_error_title">Purchase issue</string>
+    <string name="action_ok">OK</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_status_premium">Premium</string>
+    <string name="settings_status_free">Free plan</string>
+    <string name="settings_premium_desc">You have unlimited access to all features. Thank you for supporting FreelanceReceipt!</string>
+    <string name="settings_free_desc">You\'ve used %1$d of %2$d free scans this month.</string>
+    <string name="settings_upgrade">Upgrade to Premium</string>
+    <string name="settings_restore_purchases">Restore purchases</string>
+    <string name="settings_restore_purchases_desc">Already bought Premium on another device?</string>
+    <string name="settings_privacy">Privacy Policy</string>
+    <string name="settings_terms">Terms of Service</string>
+    <string name="settings_contact">Contact support</string>
+    <string name="settings_version">Version %s</string>
 </resources>

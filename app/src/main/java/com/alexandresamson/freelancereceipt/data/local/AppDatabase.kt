@@ -7,7 +7,7 @@ import com.alexandresamson.freelancereceipt.data.local.entity.ReceiptEntity
 
 @Database(
     entities = [ReceiptEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

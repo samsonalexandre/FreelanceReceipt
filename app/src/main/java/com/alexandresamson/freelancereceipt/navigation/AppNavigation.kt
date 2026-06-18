@@ -17,17 +17,23 @@ import com.alexandresamson.freelancereceipt.ui.addreceipt.AddReceiptScreen
 import com.alexandresamson.freelancereceipt.ui.dashboard.DashboardScreen
 import com.alexandresamson.freelancereceipt.ui.detail.DetailReceiptScreen
 import com.alexandresamson.freelancereceipt.ui.export.ExportScreen
+import com.alexandresamson.freelancereceipt.ui.paywall.PaywallScreen
+import com.alexandresamson.freelancereceipt.ui.settings.SettingsScreen
 import com.alexandresamson.freelancereceipt.ui.stats.StatsScreen
+import com.alexandresamson.freelancereceipt.ui.welcome.WelcomeScreen
 import org.koin.androidx.compose.koinViewModel
 
 sealed class Screen(val route: String) {
+    data object Welcome    : Screen("welcome")
     data object Login      : Screen("login")
     data object Register   : Screen("register")
     data object Biometric  : Screen("biometric")
     data object Dashboard  : Screen("dashboard")
     data object Camera     : Screen("camera")
-    data object AddReceipt : Screen("add_receipt") // ← kein Parameter mehr in der Route
+    data object AddReceipt : Screen("add_receipt")
     data object Export     : Screen("export")
+    data object Paywall    : Screen("paywall")
+    data object Settings   : Screen("settings")
 
     data object Detail : Screen("detail/{receiptId}") {
         fun createRoute(id: Long) = "detail/$id"
@@ -46,8 +52,18 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
 
     NavHost(
         navController = navController,
-        startDestination = Screen.Login.route
+        startDestination = Screen.Welcome.route
     ) {
+
+        composable(Screen.Welcome.route) {
+            WelcomeScreen(
+                onContinue = {
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(Screen.Welcome.route) { inclusive = true }
+                    }
+                }
+            )
+        }
 
         composable(
             route = Screen.Detail.route,
@@ -108,6 +124,8 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
                 onExportClick = { navController.navigate(Screen.Export.route) },
                 onStatsClick  = { navController.navigate(Screen.Stats.route) },
                 onItemClick   = { id -> navController.navigate(Screen.Detail.createRoute(id)) },
+                onSettingsClick = { navController.navigate(Screen.Settings.route) },
+                onUpgradeClick  = { navController.navigate(Screen.Paywall.route) },
                 onLogout      = {
                     authViewModel.signOut()
                     navController.navigate(Screen.Login.route) {
@@ -120,11 +138,27 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
         composable(Screen.Camera.route) {
             CameraScreen(
                 onTextRecognized = { rawText ->
-                    // Text im Holder speichern, NICHT als URL-Parameter
                     OcrResultHolder.rawText = rawText
                     navController.navigate(Screen.AddReceipt.route)
                 },
-                onBack = { navController.popBackStack() }
+                onBack = { navController.popBackStack() },
+                onPaywall = {
+                    navController.navigate(Screen.Paywall.route)
+                }
+            )
+        }
+
+        composable(Screen.Paywall.route) {
+            PaywallScreen(
+                onBack = { navController.popBackStack() },
+                onPurchased = { navController.popBackStack() }
+            )
+        }
+
+        composable(Screen.Settings.route) {
+            SettingsScreen(
+                onBack = { navController.popBackStack() },
+                onUpgradeClick = { navController.navigate(Screen.Paywall.route) }
             )
         }
 

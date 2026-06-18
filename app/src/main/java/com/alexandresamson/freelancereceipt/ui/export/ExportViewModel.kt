@@ -19,15 +19,12 @@ data class ExportUiState(
     val receipts: List<ReceiptEntity> = emptyList(),
     val isLoading: Boolean            = false,
     val shareIntent: Intent?          = null,
-    val error: String?                = null
+    val error: String?                = null,
+    val totalBrutto: Double           = 0.0,
+    val totalNetto: Double            = 0.0,
+    val totalTax: Double              = 0.0
 ) {
-    // Berechnete Zusammenfassung für die UI
-    val totalBrutto: Double get() = receipts.sumOf { it.amountInCents } / 100.0
-    val totalNetto: Double  get() = receipts.sumOf { r ->
-        r.amountInCents / (1 + r.taxRate / 100.0)
-    } / 100.0
-    val totalTax: Double    get() = totalBrutto - totalNetto
-    val currencyFormat: NumberFormat get() = NumberFormat.getCurrencyInstance(Locale.GERMANY)
+    val currencyFormat: NumberFormat = NumberFormat.getCurrencyInstance(Locale.GERMANY)
 }
 
 class ExportViewModel(
@@ -45,7 +42,19 @@ class ExportViewModel(
     private fun loadReceipts() {
         viewModelScope.launch {
             val receipts = receiptRepository.getAllReceipts().first()
-            _uiState.update { it.copy(receipts = receipts, isLoading = false) }
+            val brutto = receipts.sumOf { it.amountInCents } / 100.0
+            val netto = receipts.sumOf { r ->
+                r.amountInCents / (1 + r.taxRate / 100.0)
+            } / 100.0
+            _uiState.update {
+                it.copy(
+                    receipts = receipts,
+                    totalBrutto = brutto,
+                    totalNetto = netto,
+                    totalTax = brutto - netto,
+                    isLoading = false
+                )
+            }
         }
     }
 

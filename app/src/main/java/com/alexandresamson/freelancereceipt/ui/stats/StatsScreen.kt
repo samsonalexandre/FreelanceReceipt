@@ -14,21 +14,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexandresamson.freelancereceipt.R
+import com.alexandresamson.freelancereceipt.domain.Category
 import com.alexandresamson.freelancereceipt.domain.ReceiptStats
+import com.alexandresamson.freelancereceipt.ui.theme.ChartPalette
 import org.koin.androidx.compose.koinViewModel
 import java.text.NumberFormat
 import java.util.Locale
 
-private val CHART_COLORS = listOf(
-    Color(0xFF2196F3), Color(0xFF4CAF50), Color(0xFFF44336),
-    Color(0xFFFF9800), Color(0xFF9C27B0), Color(0xFF00BCD4), Color(0xFFFFEB3B)
-)
+private val CHART_COLORS = ChartPalette
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -75,6 +75,7 @@ fun StatsScreen(
 
 @Composable
 private fun StatsContent(stats: ReceiptStats, modifier: Modifier = Modifier) {
+    val context = LocalContext.current
     val currency = NumberFormat.getCurrencyInstance(Locale.GERMANY)
 
     Column(
@@ -97,9 +98,10 @@ private fun StatsContent(stats: ReceiptStats, modifier: Modifier = Modifier) {
             Card {
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     PieChart(data = stats.byCategory, total = stats.totalBruttoInCents, modifier = Modifier.fillMaxWidth().height(200.dp))
-                    stats.byCategory.entries.forEachIndexed { index, (category, cents) ->
+                    stats.byCategory.entries.forEachIndexed { index, (dbKey, cents) ->
                         val percent = if (stats.totalBruttoInCents > 0) (cents * 100.0 / stats.totalBruttoInCents) else 0.0
-                        LegendItem(color = CHART_COLORS[index % CHART_COLORS.size], label = category, value = currency.format(cents / 100.0), percent = percent)
+                        val displayName = Category.dbKeyToDisplayName(context, dbKey)
+                        LegendItem(color = CHART_COLORS[index % CHART_COLORS.size], label = displayName, value = currency.format(cents / 100.0), percent = percent)
                     }
                 }
             }

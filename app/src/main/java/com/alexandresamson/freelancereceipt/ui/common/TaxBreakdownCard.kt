@@ -4,8 +4,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.alexandresamson.freelancereceipt.R
 
 @Composable
 fun TaxBreakdownCard(
@@ -30,13 +32,12 @@ fun TaxBreakdownCard(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
             verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
-            // Netto
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    "Netto",
+                    stringResource(R.string.tax_label_netto),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -47,13 +48,12 @@ fun TaxBreakdownCard(
                 )
             }
 
-            // MwSt mit Prozentsatz
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    "MwSt. (${taxRate.toDoubleOrNull()?.toInt() ?: 19}%)",
+                    stringResource(R.string.tax_label_mwst, (taxRate.toDoubleOrNull()?.toInt() ?: 19).toString()),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -69,13 +69,12 @@ fun TaxBreakdownCard(
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f)
             )
 
-            // Brutto
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    "Brutto (gesamt)",
+                    stringResource(R.string.tax_label_brutto),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold
                 )

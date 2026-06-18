@@ -1,5 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.FreelanceReceipt" parent="android:Theme.Material.Light.NoActionBar" />
+    <!--
+        Base XML theme — kept minimal because Compose drives all theming.
+        We only need a stable non-NoActionBar base + correct system bar
+        colors before Compose draws its first frame.
+    -->
+    <style name="Theme.FreelanceReceipt" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/brand_blue</item>
+        <item name="android:navigationBarColor">@color/neutral_background</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <!--
+        Android 12+ system splash screen, backported to all versions via
+        androidx.core:core-splashscreen. postSplashScreenTheme is what
+        the Activity continues with after the splash dismisses.
+    -->
+    <style name="Theme.FreelanceReceipt.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/brand_blue</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_logo</item>
+        <item name="windowSplashScreenIconBackgroundColor">@color/brand_blue</item>
+        <item name="postSplashScreenTheme">@style/Theme.FreelanceReceipt</item>
+    </style>
 </resources>

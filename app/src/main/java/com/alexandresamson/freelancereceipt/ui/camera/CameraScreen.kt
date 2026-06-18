@@ -20,24 +20,42 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexandresamson.freelancereceipt.R
+import com.alexandresamson.freelancereceipt.ui.dashboard.ReceiptViewModel
 import com.google.accompanist.permissions.*
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import org.koin.androidx.compose.koinViewModel
 import java.util.concurrent.Executors
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun CameraScreen(
     onTextRecognized: (String) -> Unit,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onPaywall: () -> Unit,
+    viewModel: ReceiptViewModel = koinViewModel()
 ) {
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+    // Block free users at the door if they hit the monthly cap
+    if (state.limitReached) {
+        LimitReachedScreen(
+            scanCount = state.scanCount,
+            limit = state.freeLimit,
+            onUpgrade = onPaywall,
+            onBack = onBack
+        )
+        return
+    }
+
     val cameraPermission = rememberPermissionState(android.Manifest.permission.CAMERA)
 
     LaunchedEffect(Unit) {
@@ -56,6 +74,38 @@ fun CameraScreen(
         }
         else -> {
             PermissionDenied(onBack = onBack)
+        }
+    }
+}
+
+@Composable
+private fun LimitReachedScreen(
+    scanCount: Int,
+    limit: Int,
+    onUpgrade: () -> Unit,
+    onBack: () -> Unit
+) {
+    Column(
+        modifier = Modifier.fillMaxSize().padding(24.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = stringResource(R.string.limit_reached_title),
+            style = MaterialTheme.typography.headlineSmall
+        )
+        Spacer(Modifier.height(12.dp))
+        Text(
+            text = stringResource(R.string.limit_reached_body, scanCount, limit),
+            style = MaterialTheme.typography.bodyLarge
+        )
+        Spacer(Modifier.height(24.dp))
+        Button(onClick = onUpgrade) {
+            Text(stringResource(R.string.limit_reached_cta))
+        }
+        Spacer(Modifier.height(8.dp))
+        TextButton(onClick = onBack) {
+            Text(stringResource(R.string.action_back))
         }
     }
 }

@@ -74,9 +74,96 @@
     <string name="stats_total_brutto">Montant total (Brut)</string>
     <string name="stats_total_netto">Montant total (Net)</string>
     <string name="stats_total_tax">TVA totale</string>
-    <string name="stats_by_category">Dépenses por catégorie</string>
+    <string name="stats_by_category">Dépenses par catégorie</string>
     <string name="stats_by_month">Évolution mensuelle</string>
     <string name="stats_no_data">Aucun reçu disponible pour le moment</string>
     <string name="action_stats">Statistiques</string>
     <string name="action_refresh">Actualiser</string>
+
+    <!-- Tax Breakdown Card -->
+    <string name="tax_label_netto">Net</string>
+    <string name="tax_label_mwst">TVA (%s%%)</string>
+    <string name="tax_label_brutto">Brut (total)</string>
+
+    <!-- Error messages -->
+    <string name="error_invalid_amount">Montant invalide</string>
+    <string name="error_receipt_not_found">Reçu introuvable</string>
+
+    <!-- Categories -->
+    <string name="category_groceries">Alimentation</string>
+    <string name="category_travel">Frais de déplacement</string>
+    <string name="category_office">Bureau</string>
+    <string name="category_restaurant">Restaurant</string>
+    <string name="category_software">Logiciel</string>
+    <string name="category_other">Autre</string>
+
+    <!-- Export document strings -->
+    <string name="export_doc_title">FreelanceReceipt — Liste des reçus</string>
+    <string name="export_doc_exported_on">Exporté le %s</string>
+    <string name="export_doc_receipt_count">%d reçus</string>
+    <string name="export_doc_header_date">Date</string>
+    <string name="export_doc_header_merchant">Commerçant</string>
+    <string name="export_doc_header_amount">Montant</string>
+    <string name="export_doc_header_tax">TVA</string>
+    <string name="export_doc_header_category">Catégorie</string>
+    <string name="export_doc_total_gross">Total (Brut)</string>
+    <string name="export_doc_net">Net : %s</string>
+    <string name="export_doc_tax">TVA : %s</string>
+    <string name="export_doc_total">Total</string>
+    <string name="export_doc_footer">Créé avec FreelanceReceipt • Page %d</string>
+    <string name="export_csv_header">Date;Commerçant;Montant (€);TVA (%%);Catégorie</string>
+
+    <!-- Dashboard delete confirmation -->
+    <string name="dashboard_delete_title">Supprimer le reçu ?</string>
+    <string name="dashboard_delete_message">\"%s\" sera définitivement supprimé.</string>
+
+    <!-- Welcome -->
+    <string name="welcome_tagline">Scannez, triez, exportez — les reçus en toute simplicité.</string>
+    <string name="welcome_feature_scan">Scannez vos reçus en quelques secondes</string>
+    <string name="welcome_feature_organize">Tri automatique par catégorie</string>
+    <string name="welcome_feature_export">Export CSV et PDF</string>
+    <string name="welcome_get_started">Commencer</string>
+
+    <!-- Dashboard banner -->
+    <string name="dashboard_scans_left">%1$d sur %2$d scans restants ce mois-ci</string>
+    <string name="dashboard_limit_reached_title">Limite mensuelle atteinte</string>
+    <string name="dashboard_upgrade_hint">Touchez pour des scans illimités</string>
+    <string name="action_settings">Paramètres</string>
+
+    <!-- Limit reached -->
+    <string name="limit_reached_title">Limite gratuite atteinte</string>
+    <string name="limit_reached_body">Vous avez utilisé %1$d sur %2$d scans gratuits ce mois-ci. Passez à Premium pour des scans illimités.</string>
+    <string name="limit_reached_cta">Passer à Premium</string>
+
+    <!-- Paywall -->
+    <string name="paywall_title">Premium</string>
+    <string name="paywall_headline">Débloquez Premium</string>
+    <string name="paywall_subhead">Paiement unique. À vous pour toujours.</string>
+    <string name="paywall_feature_unlimited">Scans illimités par mois</string>
+    <string name="paywall_feature_no_ads">Aucune publicité, jamais</string>
+    <string name="paywall_feature_export">Exports PDF et CSV illimités</string>
+    <string name="paywall_feature_priority">Support email prioritaire</string>
+    <string name="paywall_feature_lifetime">Accès à vie — sans abonnement</string>
+    <string name="paywall_one_time_label">Paiement unique</string>
+    <string name="paywall_price_fallback">6,99 €</string>
+    <string name="paywall_no_subscription">Sans abonnement · Aucun frais récurrent</string>
+    <string name="paywall_cta_purchase">Acheter Premium</string>
+    <string name="paywall_restore">Restaurer l\'achat précédent</string>
+    <string name="paywall_legal">En achetant, vous acceptez nos Conditions et notre Politique de confidentialité. Le paiement sera débité de votre compte Google Play.</string>
+    <string name="paywall_error_title">Problème d\'achat</string>
+    <string name="action_ok">OK</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Paramètres</string>
+    <string name="settings_status_premium">Premium</string>
+    <string name="settings_status_free">Plan gratuit</string>
+    <string name="settings_premium_desc">Vous avez un accès illimité à toutes les fonctionnalités. Merci de soutenir FreelanceReceipt !</string>
+    <string name="settings_free_desc">Vous avez utilisé %1$d sur %2$d scans gratuits ce mois-ci.</string>
+    <string name="settings_upgrade">Passer à Premium</string>
+    <string name="settings_restore_purchases">Restaurer les achats</string>
+    <string name="settings_restore_purchases_desc">Premium déjà acheté sur un autre appareil ?</string>
+    <string name="settings_privacy">Politique de confidentialité</string>
+    <string name="settings_terms">Conditions d\'utilisation</string>
+    <string name="settings_contact">Contacter le support</string>
+    <string name="settings_version">Version %s</string>
 </resources>

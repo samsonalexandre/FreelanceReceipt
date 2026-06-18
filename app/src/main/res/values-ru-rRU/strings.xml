@@ -79,4 +79,91 @@
     <string name="stats_no_data">Чеки пока отсутствуют</string>
     <string name="action_stats">Статистика</string>
     <string name="action_refresh">Обновить</string>
+
+    <!-- Tax Breakdown Card -->
+    <string name="tax_label_netto">Нетто</string>
+    <string name="tax_label_mwst">НДС (%s%%)</string>
+    <string name="tax_label_brutto">Брутто (итого)</string>
+
+    <!-- Error messages -->
+    <string name="error_invalid_amount">Неверная сумма</string>
+    <string name="error_receipt_not_found">Чек не найден</string>
+
+    <!-- Categories -->
+    <string name="category_groceries">Продукты</string>
+    <string name="category_travel">Транспортные расходы</string>
+    <string name="category_office">Офис</string>
+    <string name="category_restaurant">Ресторан</string>
+    <string name="category_software">Программы</string>
+    <string name="category_other">Прочее</string>
+
+    <!-- Export document strings -->
+    <string name="export_doc_title">FreelanceReceipt — Список чеков</string>
+    <string name="export_doc_exported_on">Экспортировано %s</string>
+    <string name="export_doc_receipt_count">%d чеков</string>
+    <string name="export_doc_header_date">Дата</string>
+    <string name="export_doc_header_merchant">Продавец</string>
+    <string name="export_doc_header_amount">Сумма</string>
+    <string name="export_doc_header_tax">НДС</string>
+    <string name="export_doc_header_category">Категория</string>
+    <string name="export_doc_total_gross">Итого (брутто)</string>
+    <string name="export_doc_net">Нетто: %s</string>
+    <string name="export_doc_tax">НДС: %s</string>
+    <string name="export_doc_total">Итого</string>
+    <string name="export_doc_footer">Создано в FreelanceReceipt • Страница %d</string>
+    <string name="export_csv_header">Дата;Продавец;Сумма (€);НДС (%%);Категория</string>
+
+    <!-- Dashboard delete confirmation -->
+    <string name="dashboard_delete_title">Удалить чек?</string>
+    <string name="dashboard_delete_message">\"%s\" будет безвозвратно удалён.</string>
+
+    <!-- Welcome -->
+    <string name="welcome_tagline">Сканируй, сортируй, экспортируй — чеки без хлопот.</string>
+    <string name="welcome_feature_scan">Сканируй чеки за секунды</string>
+    <string name="welcome_feature_organize">Автосортировка по категориям</string>
+    <string name="welcome_feature_export">Экспорт в CSV и PDF</string>
+    <string name="welcome_get_started">Начать</string>
+
+    <!-- Dashboard banner -->
+    <string name="dashboard_scans_left">Осталось %1$d из %2$d сканов в этом месяце</string>
+    <string name="dashboard_limit_reached_title">Достигнут месячный лимит</string>
+    <string name="dashboard_upgrade_hint">Нажми для безлимитных сканов</string>
+    <string name="action_settings">Настройки</string>
+
+    <!-- Limit reached -->
+    <string name="limit_reached_title">Бесплатный лимит исчерпан</string>
+    <string name="limit_reached_body">Использовано %1$d из %2$d бесплатных сканов в этом месяце. Обнови до Premium для безлимита.</string>
+    <string name="limit_reached_cta">Перейти на Premium</string>
+
+    <!-- Paywall -->
+    <string name="paywall_title">Premium</string>
+    <string name="paywall_headline">Открой Premium</string>
+    <string name="paywall_subhead">Разовая оплата. Навсегда твой.</string>
+    <string name="paywall_feature_unlimited">Безлимитные сканы в месяц</string>
+    <string name="paywall_feature_no_ads">Никакой рекламы</string>
+    <string name="paywall_feature_export">Безлимитный экспорт PDF и CSV</string>
+    <string name="paywall_feature_priority">Приоритетная поддержка по email</string>
+    <string name="paywall_feature_lifetime">Пожизненный доступ — без подписки</string>
+    <string name="paywall_one_time_label">Разовый платёж</string>
+    <string name="paywall_price_fallback">€6,99</string>
+    <string name="paywall_no_subscription">Без подписки · Без повторных списаний</string>
+    <string name="paywall_cta_purchase">Купить Premium</string>
+    <string name="paywall_restore">Восстановить покупку</string>
+    <string name="paywall_legal">Покупая, ты принимаешь Условия и Политику конфиденциальности. Оплата спишется с твоего аккаунта Google Play.</string>
+    <string name="paywall_error_title">Проблема с покупкой</string>
+    <string name="action_ok">OK</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Настройки</string>
+    <string name="settings_status_premium">Premium</string>
+    <string name="settings_status_free">Бесплатный план</string>
+    <string name="settings_premium_desc">У тебя безлимитный доступ ко всем функциям. Спасибо за поддержку FreelanceReceipt!</string>
+    <string name="settings_free_desc">Использовано %1$d из %2$d бесплатных сканов в этом месяце.</string>
+    <string name="settings_upgrade">Перейти на Premium</string>
+    <string name="settings_restore_purchases">Восстановить покупки</string>
+    <string name="settings_restore_purchases_desc">Уже купил Premium на другом устройстве?</string>
+    <string name="settings_privacy">Политика конфиденциальности</string>
+    <string name="settings_terms">Условия использования</string>
+    <string name="settings_contact">Связаться с поддержкой</string>
+    <string name="settings_version">Версия %s</string>
 </resources>

@@ -1,5 +1,7 @@
 package com.alexandresamson.freelancereceipt.ui.biometric
 
+import android.content.Context
+import android.content.ContextWrapper
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.*
 import androidx.biometric.BiometricPrompt
@@ -17,15 +19,34 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.alexandresamson.freelancereceipt.R
 
+/**
+ * LocalContext.current in Compose returns a ContextWrapper, not the
+ * Activity directly. We must unwrap the chain to reach the underlying
+ * FragmentActivity — a direct cast throws ClassCastException.
+ */
+private fun Context.findFragmentActivity(): FragmentActivity? {
+    var ctx: Context? = this
+    while (ctx is ContextWrapper) {
+        if (ctx is FragmentActivity) return ctx
+        ctx = ctx.baseContext
+    }
+    return null
+}
+
 @Composable
 fun BiometricLockScreen(onUnlocked: () -> Unit) {
     val context = LocalContext.current
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
-    // Biometrie direkt beim Öffnen des Screens auslösen
     LaunchedEffect(Unit) {
+        val activity = context.findFragmentActivity()
+        if (activity == null) {
+            // No Activity in context chain — skip the lock screen rather than crash
+            onUnlocked()
+            return@LaunchedEffect
+        }
         triggerBiometric(
-            activity = context as FragmentActivity,
+            activity = activity,
             onSuccess = onUnlocked,
             onError = { errorMessage = it }
         )
@@ -59,14 +80,18 @@ fun BiometricLockScreen(onUnlocked: () -> Unit) {
             Text(it, color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.bodySmall)
             Spacer(Modifier.height(12.dp))
-            // Manueller Retry-Button, falls Biometrie fehlschlägt
             OutlinedButton(onClick = {
                 errorMessage = null
-                triggerBiometric(
-                    activity = context as FragmentActivity,
-                    onSuccess = onUnlocked,
-                    onError = { errorMessage = it }
-                )
+                val activity = context.findFragmentActivity()
+                if (activity != null) {
+                    triggerBiometric(
+                        activity = activity,
+                        onSuccess = onUnlocked,
+                        onError = { errorMessage = it }
+                    )
+                } else {
+                    onUnlocked()
+                }
             }) {
                 Text(stringResource(R.string.biometric_retry))
             }
