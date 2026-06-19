@@ -140,7 +140,7 @@
     <string name="paywall_headline">Premium freischalten</string>
     <string name="paywall_subhead">Einmalzahlung. Für immer dein.</string>
     <string name="paywall_feature_unlimited">Unbegrenzte Scans pro Monat</string>
-    <string name="paywall_feature_no_ads">Keine Werbung, niemals</string>
+    <string name="paywall_feature_no_ads">Keine Werbung</string>
     <string name="paywall_feature_export">Unbegrenzter PDF- &amp; CSV-Export</string>
     <string name="paywall_feature_priority">Bevorzugter E-Mail-Support</string>
     <string name="paywall_feature_lifetime">Lebenslanger Zugriff — kein Abo</string>

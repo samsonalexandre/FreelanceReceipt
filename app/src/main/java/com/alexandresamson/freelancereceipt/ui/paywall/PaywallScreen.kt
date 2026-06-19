@@ -29,7 +29,14 @@ import com.alexandresamson.freelancereceipt.R
 import com.alexandresamson.freelancereceipt.ui.theme.AccentGold
 import com.alexandresamson.freelancereceipt.ui.theme.BrandBlue
 import com.alexandresamson.freelancereceipt.ui.theme.BrandBlueDark
+import com.alexandresamson.freelancereceipt.ui.theme.NeutralOnBackground
 import org.koin.androidx.compose.koinViewModel
+
+// Fixed text colors for the white cards — independent of the system
+// light/dark theme, so contrast on the white card surface stays high.
+private val CardTextPrimary   = NeutralOnBackground          // dark navy — for headlines/feature rows
+private val CardTextSecondary = Color(0xFF546E89)           // mid-blue-grey — for muted labels
+
 
 private fun Context.findActivity(): Activity? {
     var ctx: Context? = this
@@ -158,7 +165,7 @@ fun PaywallScreen(
                     Text(
                         stringResource(R.string.paywall_one_time_label),
                         fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = CardTextSecondary
                     )
                     Text(
                         state.priceLabel ?: stringResource(R.string.paywall_price_fallback),
@@ -169,7 +176,7 @@ fun PaywallScreen(
                     Text(
                         stringResource(R.string.paywall_no_subscription),
                         fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = CardTextSecondary
                     )
 
                     Spacer(Modifier.height(8.dp))
@@ -192,7 +199,7 @@ fun PaywallScreen(
                         onClick = { viewModel.restore() },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text(stringResource(R.string.paywall_restore))
+                        Text(stringResource(R.string.paywall_restore), color = BrandBlueDark)
                     }
                 }
             }
@@ -221,6 +228,6 @@ private fun Feature(text: String) {
             contentDescription = null,
             tint = BrandBlue
         )
-        Text(text, fontSize = 15.sp)
+        Text(text, fontSize = 15.sp, color = CardTextPrimary)
     }
 }

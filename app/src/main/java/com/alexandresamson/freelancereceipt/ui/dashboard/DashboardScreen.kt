@@ -104,13 +104,15 @@ private fun DashboardContent(
             TopAppBar(
                 title = {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(stringResource(R.string.app_name))
+                        Text(
+                            text = stringResource(R.string.app_name),
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            maxLines = 1,
+                            softWrap = false
+                        )
                         Spacer(Modifier.width(8.dp))
-                        if (state.isPremium) {
-                            PremiumBadge()
-                        } else {
-                            FreeBadge()
-                        }
+                        if (state.isPremium) PremiumBadge() else FreeBadge()
                     }
                 },
                 actions = {
@@ -185,10 +187,12 @@ private fun PremiumBadge() {
             )
             Spacer(Modifier.width(4.dp))
             Text(
-                "PRO",
+                text = "PRO",
                 color = Color.White,
                 fontSize = 11.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                maxLines = 1,
+                softWrap = false
             )
         }
     }
@@ -201,10 +205,12 @@ private fun FreeBadge() {
         color = Color.White.copy(alpha = 0.25f)
     ) {
         Text(
-            "FREE",
+            text = "FREE",
             color = Color.White,
             fontSize = 11.sp,
             fontWeight = FontWeight.SemiBold,
+            maxLines = 1,
+            softWrap = false,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
         )
     }
@@ -327,7 +333,9 @@ private fun ReceiptItem(
                 Text(
                     text = receipt.merchant,
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
+                    maxLines = 1,
+                    overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(

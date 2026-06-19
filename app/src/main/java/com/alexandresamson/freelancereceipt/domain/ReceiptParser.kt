@@ -70,14 +70,49 @@ object ReceiptParser {
         )
     }
 
-    private fun extractMerchant(lines: List<String>): String =
-        lines.firstOrNull {
-            it.length > 2
-                    && !it.all { c -> c.isDigit() || c in ".,:-/" }
-                    && !it.startsWith("Beleg")
-                    && !it.startsWith("Tel")
-                    && !it.startsWith("Ubj")
-        }?.take(40) ?: "Unbekannt"
+    /**
+     * Anti-patterns identifying lines that are NOT a merchant name.
+     * The merchant is almost always near the top of the receipt, but
+     * OCR may miss the very first lines (logo/header artifacts), so we
+     * walk down and reject metadata rows (phone, address, ID).
+     */
+    private val MERCHANT_REJECT_PREFIXES = listOf(
+        "beleg", "tel", "fax", "obj", "nr", "datum", "uhrzeit",
+        "kunde", "rechnung", "u0", "ubj", "str.", "straße",
+        "kartenzahlung", "terminal", "transakt", "genehmigung",
+        "gesamt", "summe", "total", "endbetrag", "zwischensumme",
+        "netto", "brutto", "mwst", "ust", "vat", "steuer",
+        "typ", "menge", "anzahl", "kundenbeleg", "girocard",
+        "karte", "emv", "zahlung", "betrag", "preis",
+        "inh.", "inhaber"
+    )
+    private val MERCHANT_LONG_NUMBER = Regex("""\d{4,}""")
+    private val MERCHANT_POSTAL_LINE = Regex("""^\d{4,5}\s+\S""") // "41363 JUCHEN"
+    private val MERCHANT_GARBAGE     = Regex("""[*#@]""")
+
+    /** Address fragments — must appear as whole-word tokens, not as substrings of legit names. */
+    private val MERCHANT_ADDRESS_TOKENS = Regex(
+        """\b(str\.?|straße|strasse|weg|platz|allee|gasse|ring)\b""",
+        RegexOption.IGNORE_CASE
+    )
+
+    private fun extractMerchant(lines: List<String>): String {
+        val candidate = lines.firstOrNull { line ->
+            val lower = line.lowercase()
+            val letterCount = line.count { it.isLetter() }
+
+            line.length in 3..50
+                    && letterCount >= 3
+                    && MERCHANT_REJECT_PREFIXES.none { lower.startsWith(it) }
+                    && !MERCHANT_LONG_NUMBER.containsMatchIn(line)
+                    && !MERCHANT_POSTAL_LINE.containsMatchIn(line)
+                    && !MERCHANT_GARBAGE.containsMatchIn(line)
+                    && !MERCHANT_ADDRESS_TOKENS.containsMatchIn(line)
+                    // letters must dominate over digits/symbols
+                    && letterCount * 2 > line.length
+        }
+        return candidate?.take(40) ?: "Unbekannt"
+    }
 
     private fun extractAmount(lines: List<String>, lowerText: String): Long {
         for (pattern in BRUTTO_PATTERNS) {
