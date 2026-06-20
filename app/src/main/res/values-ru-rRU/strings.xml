@@ -166,4 +166,13 @@
     <string name="settings_terms">Условия использования</string>
     <string name="settings_contact">Связаться с поддержкой</string>
     <string name="settings_version">Версия %s</string>
+
+    <!-- Hidden Gift Code -->
+    <string name="gift_dialog_title">Активировать подарочный код</string>
+    <string name="gift_dialog_body">Получил код от друга? Введи его, чтобы активировать Premium.</string>
+    <string name="gift_code_label">Код</string>
+    <string name="gift_activate">Активировать</string>
+    <string name="gift_success">Premium активирован. Наслаждайся!</string>
+    <string name="gift_invalid">Неверный код. Попробуй ещё раз.</string>
+    <string name="gift_already_premium">У тебя уже есть Premium — код не нужен.</string>
 </resources>

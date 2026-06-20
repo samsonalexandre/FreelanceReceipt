@@ -166,4 +166,13 @@
     <string name="settings_terms">Kullanım Şartları</string>
     <string name="settings_contact">Desteğe ulaş</string>
     <string name="settings_version">Sürüm %s</string>
+
+    <!-- Hidden Gift Code -->
+    <string name="gift_dialog_title">Hediye kodunu aktive et</string>
+    <string name="gift_dialog_body">Bir arkadaştan kod mu aldın? Premium\'u açmak için aşağıya gir.</string>
+    <string name="gift_code_label">Kod</string>
+    <string name="gift_activate">Aktive et</string>
+    <string name="gift_success">Premium aktif. Keyfini çıkar!</string>
+    <string name="gift_invalid">Geçersiz kod. Lütfen tekrar dene.</string>
+    <string name="gift_already_premium">Zaten Premium var — koda gerek yok.</string>
 </resources>

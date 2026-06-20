@@ -167,4 +167,13 @@
     <string name="settings_terms">Terms of Service</string>
     <string name="settings_contact">Contact support</string>
     <string name="settings_version">Version %s</string>
+
+    <!-- Hidden Gift Code (7-tap easter egg) -->
+    <string name="gift_dialog_title">Activate gift code</string>
+    <string name="gift_dialog_body">Got a code from a friend? Enter it below to unlock Premium.</string>
+    <string name="gift_code_label">Code</string>
+    <string name="gift_activate">Activate</string>
+    <string name="gift_success">Premium activated. Enjoy!</string>
+    <string name="gift_invalid">Invalid code. Please try again.</string>
+    <string name="gift_already_premium">You already have Premium — no code needed.</string>
 </resources>

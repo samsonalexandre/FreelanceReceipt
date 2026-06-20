@@ -166,4 +166,13 @@
     <string name="settings_terms">Termini di servizio</string>
     <string name="settings_contact">Contatta l\'assistenza</string>
     <string name="settings_version">Versione %s</string>
+
+    <!-- Hidden Gift Code -->
+    <string name="gift_dialog_title">Attiva codice regalo</string>
+    <string name="gift_dialog_body">Hai ricevuto un codice da un amico? Inseriscilo qui per sbloccare Premium.</string>
+    <string name="gift_code_label">Codice</string>
+    <string name="gift_activate">Attiva</string>
+    <string name="gift_success">Premium attivato. Buon divertimento!</string>
+    <string name="gift_invalid">Codice non valido. Riprova.</string>
+    <string name="gift_already_premium">Hai già Premium — nessun codice necessario.</string>
 </resources>
