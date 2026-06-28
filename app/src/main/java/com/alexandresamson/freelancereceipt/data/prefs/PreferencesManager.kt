@@ -6,8 +6,10 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.alexandresamson.freelancereceipt.BuildConfig
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import java.text.SimpleDateFormat
 import java.util.*
@@ -28,7 +30,8 @@ class PreferencesManager(private val context: Context) {
     private val KEY_WELCOME_SEEN  = booleanPreferencesKey("welcome_seen")
 
     val isPremium: Flow<Boolean> =
-        context.dataStore.data.map { it[KEY_PREMIUM] ?: false }
+        if (BuildConfig.DEBUG) flowOf(true)
+        else context.dataStore.data.map { it[KEY_PREMIUM] ?: false }
 
     val scanCount: Flow<Int> =
         context.dataStore.data.map { prefs ->
@@ -55,7 +58,8 @@ class PreferencesManager(private val context: Context) {
     }
 
     suspend fun currentScanCountSync(): Int = scanCount.first()
-    suspend fun isPremiumSync(): Boolean = isPremium.first()
+    suspend fun isPremiumSync(): Boolean =
+        if (BuildConfig.DEBUG) true else isPremium.first()
 
     suspend fun setWelcomeSeen() {
         context.dataStore.edit { it[KEY_WELCOME_SEEN] = true }

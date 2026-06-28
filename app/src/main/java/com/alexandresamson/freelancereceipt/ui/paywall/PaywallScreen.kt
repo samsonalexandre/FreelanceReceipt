@@ -9,7 +9,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
@@ -25,10 +25,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.alexandresamson.freelancereceipt.R
 import com.alexandresamson.freelancereceipt.ui.theme.AccentGold
 import com.alexandresamson.freelancereceipt.ui.theme.BrandBlue
 import com.alexandresamson.freelancereceipt.ui.theme.BrandBlueDark
+import com.alexandresamson.freelancereceipt.R
 import com.alexandresamson.freelancereceipt.ui.theme.NeutralOnBackground
 import org.koin.androidx.compose.koinViewModel
 
@@ -82,7 +82,7 @@ fun PaywallScreen(
                 title = { Text(stringResource(R.string.paywall_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = stringResource(R.string.action_back))
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.action_back))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
